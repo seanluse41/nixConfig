@@ -7,16 +7,13 @@
         unzip
         zip
         unrar
-        fastfetch
+        # nix
         nixfmt
-        erdtree
-        nvd
+        nh
         sops
         age
+        erdtree
         wget
-        git
-        gh
-        vim
         htop
         btop
         docker-compose
@@ -24,10 +21,10 @@
         android-tools
         flutter
         rustup
+        # node
         nodejs
         npm-check-updates
         clang
-        git-lfs
         stripe-cli
         cargo-tauri
         uv
