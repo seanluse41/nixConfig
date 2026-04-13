@@ -28,6 +28,8 @@
         stripe-cli
         cargo-tauri
         uv
+        git
+        gh
       ];
 
       programs.fastfetch = {
