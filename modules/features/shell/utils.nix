@@ -30,6 +30,7 @@
         uv
         git
         gh
+        jdk
       ];
 
       programs.fastfetch = {
