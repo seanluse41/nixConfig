@@ -18,7 +18,7 @@
     hardware.xpadneo.enable = true;
 
     boot.kernelModules = [ "hid_nintendo" "xpad" ];
-    boot.kernelParams = [ "usbhid.quirks=0x057e:0x2009:0x80000000" ];
+    boot.kernelParams = [ "usbhid.quirks=0x057e:0x2009:0x80000000" "pcie_aspm=off" ];
 
     environment.systemPackages = with pkgs; [
       wine-staging

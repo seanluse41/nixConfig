@@ -94,6 +94,7 @@
 
       networking.hostName = "nixos";
       networking.networkmanager.enable = true;
+      networking.networkmanager.wifi.powersave = false;
 
       services.printing.enable = true;
       services.avahi = {

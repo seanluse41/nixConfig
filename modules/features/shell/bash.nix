@@ -4,7 +4,7 @@ let
 in
 {
   flake.homeModules.bash =
-    { ... }:
+    { config, ... }:
     {
       programs.bash = {
         enable = true;
@@ -22,10 +22,12 @@ in
         };
         sessionVariables = {
           SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
+          CARGO_HOME = "${config.xdg.dataHome}/cargo";
+          RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
+          npm_config_cache = "${config.xdg.cacheHome}/npm";
         };
         initExtra = ''
           fastfetch
-          export NPM_CONFIG_PREFIX="$HOME/.npm-global"
           export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
         '';
       };
