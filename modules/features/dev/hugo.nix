@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.hugo = { nixpkgs-hugo, nixpkgs-sass, ... }:
   let
     hugoPkgs = import nixpkgs-hugo { system = "aarch64-darwin"; };

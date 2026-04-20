@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.wiimote = { pkgs, ... }: {
     boot.kernelModules = [ "uinput" ];
 

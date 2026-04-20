@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.kintone = { pkgs, ... }:
   let
     version = "1.19.1";

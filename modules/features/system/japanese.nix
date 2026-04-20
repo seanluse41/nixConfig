@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.japanese = { pkgs, ... }: {
     i18n.inputMethod = {
       enable = true;

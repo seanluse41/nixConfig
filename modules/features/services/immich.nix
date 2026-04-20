@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.immich = { pkgs, ... }: {
     services.immich = {
       enable = true;

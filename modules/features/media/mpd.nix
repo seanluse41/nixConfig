@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.mpd = { config, ... }: {
     services.mpd = {
       enable = true;

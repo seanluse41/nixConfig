@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ ... }:
 let
   consts = import ../../../consts.nix;
 in

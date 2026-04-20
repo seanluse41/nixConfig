@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.gaming = { pkgs, ... }: {
     programs.steam = {
       enable = true;
@@ -23,7 +23,7 @@
     environment.systemPackages = with pkgs; [
       wine-staging
       winetricks
-      (heroic.override { extraPkgs = pkgs: [ gamescope ]; })
+      (heroic.override { extraPkgs = _pkgs: [ gamescope ]; })
     ];
   };
 }

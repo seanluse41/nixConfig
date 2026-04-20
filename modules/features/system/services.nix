@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.desktopServices = { ... }: {
     services.flaresolverr = {
       enable = true;

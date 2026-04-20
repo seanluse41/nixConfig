@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.communications = { config, pkgs, ... }: {
     programs.thunderbird = {
       enable = true;

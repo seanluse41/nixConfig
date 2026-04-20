@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.borgBackup = { pkgs, ... }: let
     pi256 = "192.168.50.191";
     user = "sean";

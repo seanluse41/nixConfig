@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.mpv = { ... }: {
     programs.mpv = {
       enable = true;

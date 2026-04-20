@@ -1,5 +1,5 @@
-{ self, inputs, ... }: {
-  flake.homeModules.aerospace = { pkgs, ... }: {
+{ ... }: {
+  flake.homeModules.aerospace = { ... }: {
     programs.aerospace = {
       enable = true;
       launchd.enable = true;

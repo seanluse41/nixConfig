@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.nfs = { ... }: {
     services.nfs.server = {
       enable = true;

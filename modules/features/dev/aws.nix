@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.aws = { pkgs, lib, ... }: {
     home.packages = with pkgs; [
       awscli2

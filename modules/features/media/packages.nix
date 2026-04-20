@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.mediaPackages = { pkgs, ... }: {
     home.packages = with pkgs; [
       yt-dlp

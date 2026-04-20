@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.homeModules.utils =
     { pkgs, ... }:
@@ -12,10 +12,14 @@
         nh
         sops
         age
+        nix-tree
+        deadnix
+        # 
         erdtree
         wget
         htop
         btop
+        #
         docker-compose
         claude-code
         android-tools

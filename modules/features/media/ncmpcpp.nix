@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.ncmpcpp = { pkgs, ... }: {
     programs.ncmpcpp = {
       enable = true;

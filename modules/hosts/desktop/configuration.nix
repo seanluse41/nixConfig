@@ -3,7 +3,6 @@
   flake.nixosModules.desktopConfig =
     {
       pkgs,
-      lib,
       config,
       ...
     }:
@@ -166,7 +165,6 @@
           {
             config,
             pkgs,
-            lib,
             ...
           }:
           {
@@ -215,6 +213,8 @@
               };
               overrides.global.Context.filesystems = [ "/nix/store:ro" ];
             };
+
+            programs.nix-index-database.comma.enable = true;
 
             programs.ssh = {
               enable = true;

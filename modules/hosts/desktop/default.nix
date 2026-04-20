@@ -12,8 +12,11 @@
       desktopConfig
       inputs.home-manager.nixosModules.default
       {
-        home-manager.extraSpecialArgs = { hostName = "desktop"; };
+        home-manager.extraSpecialArgs = {
+          hostName = "desktop";
+        };
         home-manager.users.sean.imports = with self.homeModules; [
+          inputs.nix-index-database.homeModules.nix-index
           chromium
           bash
           vscode

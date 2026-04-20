@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.devPackages = { pkgs, lib, ... }: {
     home.packages = with pkgs; [
       godot

@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.homeModules.emulators = { pkgs, ... }: {
     home.packages = with pkgs; [
       dolphin-emu

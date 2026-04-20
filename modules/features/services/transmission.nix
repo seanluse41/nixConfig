@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   flake.nixosModules.transmission = { pkgs, ... }: {
     services.transmission = {
       enable = true;
