@@ -43,6 +43,7 @@
         "terminal.integrated.stickyScroll.enabled" = false;
         "redhat.telemetry.enabled" = false;
         "js/ts.updateImportsOnFileMove.enabled" = "always";
+        "update.mode" = "none";
       };
     };
   };
