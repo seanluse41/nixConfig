@@ -1,7 +1,7 @@
 { self, inputs, ... }:
 {
   flake.nixosModules.aiServerConfig =
-    { ... }:
+    { pkgs, ... }:
     {
       imports = [ self.nixosModules.aiServerHardware ];
 
