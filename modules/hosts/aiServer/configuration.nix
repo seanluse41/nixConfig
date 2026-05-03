@@ -14,14 +14,6 @@
       time.timeZone = "Asia/Tokyo";
       i18n.defaultLocale = "en_US.UTF-8";
 
-      users.users.sean = {
-        isNormalUser = true;
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-        ];
-      };
-
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
@@ -37,7 +29,24 @@
 
       hardware.graphics = {
         enable = true;
-        enable32Bit = true;
+        extraPackages = with pkgs; [
+          rocmPackages.clr
+          rocmPackages.clr.icd
+        ];
+      };
+
+      systemd.tmpfiles.rules = [
+        "L+ /opt/rocm/hip - - - - ${pkgs.rocmPackages.clr}"
+      ];
+
+      users.users.sean = {
+        isNormalUser = true;
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "video"
+          "render"
+        ];
       };
 
       services.openssh = {
