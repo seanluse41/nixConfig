@@ -13,6 +13,13 @@
 
       networking.hostName = "ai-server";
       networking.networkmanager.enable = true;
+      networking.firewall.allowedTCPPorts = [
+        22
+        80
+        443
+        8080
+        8033
+      ];
 
       time.timeZone = "Asia/Tokyo";
       i18n.defaultLocale = "en_US.UTF-8";
