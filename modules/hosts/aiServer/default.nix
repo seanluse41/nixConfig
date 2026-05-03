@@ -4,12 +4,14 @@
     system = "x86_64-linux";
     modules = with self.nixosModules; [
       aiServerConfig
+      tailscale
       inputs.home-manager.nixosModules.default
       {
         home-manager.extraSpecialArgs = { hostName = "aiServer"; };
         home-manager.users.sean.imports = with self.homeModules; [
           bash
           ai
+          utils
         ];
       }
     ];

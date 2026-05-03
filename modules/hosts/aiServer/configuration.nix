@@ -3,7 +3,10 @@
   flake.nixosModules.aiServerConfig =
     { pkgs, ... }:
     {
-      imports = [ self.nixosModules.aiServerHardware ];
+      imports = [
+        self.nixosModules.aiServerHardware
+        self.nixosModules.tailscale
+      ];
 
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;

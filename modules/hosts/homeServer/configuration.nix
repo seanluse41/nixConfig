@@ -6,7 +6,6 @@
       imports = [
         self.nixosModules.homeServerHardware
         inputs.sops-nix.nixosModules.sops
-        inputs.home-manager.nixosModules.default
       ];
       sops = {
         defaultSopsFile = "${self}/secrets/secrets.yaml";
