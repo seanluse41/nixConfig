@@ -7,7 +7,7 @@
       tailscale
       inputs.home-manager.nixosModules.default
       {
-        home-manager.extraSpecialArgs = { hostName = "aiServer"; };
+        home-manager.extraSpecialArgs = { hostName = "aiServer"; inherit inputs; };
         home-manager.users.sean.imports = with self.homeModules; [
           bash
           ai
