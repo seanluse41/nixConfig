@@ -26,7 +26,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llama-cpp = {
-      url = "github:ggml-org/llama.cpp";
+      url = "github:am17an/llama.cpp/mtp-clean";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -45,6 +45,13 @@
         ];
       };
 
+      nix.settings.max-jobs = "auto";
+      nix.settings.cores = 0;
+
+      environment.variables = {
+        ROCM_TARGET_LIST = "gfx1031,gfx1200";
+      };
+
       systemd.tmpfiles.rules = [
         "L+ /opt/rocm/hip - - - - ${pkgs.rocmPackages.clr}"
       ];

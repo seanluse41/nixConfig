@@ -16,7 +16,12 @@
         else if hostName == "desktop" then
           llamaFlake.rocm
         else if hostName == "aiServer" then
-          llamaFlake.rocm
+          llamaFlake.rocm.overrideAttrs (old: {
+            cmakeFlags = (builtins.filter
+              (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null)
+              old.cmakeFlags)
+              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1031;gfx1200" ];
+          })
         else
           pkgs.llama-cpp;
     in
@@ -33,7 +38,7 @@
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-35B-A3B-GGUF:Q5_K_M --jinja -c 32768 --host 0.0.0.0 --port 8033 -np 3 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap -t 8 -tb 8";
+          ExecStart = "${llama}/bin/llama-server -hf am17an/Qwen3.6-27B-MTP-GGUF:Q6_K --spec-type mtp --spec-draft-n-max 3 --jinja -c 32768 --host 0.0.0.0 --port 8033 -np 1 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap -t 8 -tb 8 -ctk q8_0 -ctv q8_0 -ngl 99";
           Restart = "on-failure";
         };
         Install = {
