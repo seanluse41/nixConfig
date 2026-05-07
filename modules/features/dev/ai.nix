@@ -5,14 +5,18 @@
       pkgs,
       lib,
       hostName,
+      inputs,
       ...
     }:
     let
+      llamaFlake = inputs.llama-cpp.packages.${pkgs.system};
       llama =
         if hostName == "macbook" then
           pkgs.llama-cpp
-        else if hostName == "desktop" || hostName == "aiServer" then
-          pkgs.llama-cpp-rocm
+        else if hostName == "desktop" then
+          llamaFlake.rocm
+        else if hostName == "aiServer" then
+          llamaFlake.rocm
         else
           pkgs.llama-cpp;
     in

@@ -4,7 +4,7 @@
       enable = true;
       shellAliases = {
         rebuild = "nh home switch ~/nixConfig --configuration seanluse";
-        gemma = "llama-server -hf unsloth/gemma-4-26B-A4B-it-GGUF --jinja -c 16384 --host 127.0.0.1 --port 8033 -np 1 --min-p 0.0 --webui-mcp-proxy";
+        gemma = "llama-server -hf mlx-community/gemma-4-31B-it-assistant-bf16 --jinja -c 16384 --host 127.0.0.1 --port 8033 -np 1 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap";
       };
       initContent = ''
         fastfetch
