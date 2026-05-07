@@ -51,6 +51,7 @@
 
       users.users.sean = {
         isNormalUser = true;
+        linger = true;
         extraGroups = [
           "wheel"
           "networkmanager"
