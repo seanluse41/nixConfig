@@ -25,8 +25,8 @@
       url = "path:./shells/tauri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    llama-cpp = {
-      url = "github:am17an/llama.cpp/mtp-clean";
+    llama-cpp = { 
+      url = "github:AtomicBot-ai/atomic-llama-cpp-turboquant";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
