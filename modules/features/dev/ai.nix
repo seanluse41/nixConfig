@@ -24,7 +24,7 @@
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -m /home/sean/models/gemma-4-31B-it-Q6_K.gguf -ngl 99 -fa on -c 4096 -np 1 --no-mmproj --host 0.0.0.0 --port 8033";
+          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-35B-A3B-GGUF:Q5_K_M --jinja -c 32768 --host 0.0.0.0 --port 8033 -np 3 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap -t 8 -tb 8";
           Restart = "on-failure";
         };
         Install = {
