@@ -37,7 +37,7 @@
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf froggeric/Qwen3.6-27B-MTP-GGUF:Q6_K --spec-type mtp --spec-draft-n-max 3 --jinja -c 32768 --host 0.0.0.0 --port 8033 -np 1 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap -t 8 -tb 8 -ctk q8_0 -ctv q8_0 -ngl 99";
+          ExecStart = "${llama}/bin/llama-server -hf AtomicChat/gemma-4-31B-it-assistant-GGUF:Q8_0 --spec-type mtp --spec-draft-n-max 3 --jinja -c 32768 --host 0.0.0.0 --port 8033 -np 1 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap -t 8 -tb 8 -ctk q8_0 -ctv q8_0 -ngl 99";
           Restart = "on-failure";
         };
         Install = {
