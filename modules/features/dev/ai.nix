@@ -5,29 +5,15 @@
       pkgs,
       lib,
       hostName,
-      inputs,
       ...
     }:
     let
-      llamaFlake = inputs.llama-cpp.packages.${pkgs.system};
-      llama =
-        if hostName == "macbook" then
-          pkgs.llama-cpp
-        else if hostName == "desktop" then
-          llamaFlake.rocm
-        else if hostName == "aiServer" then
-          llamaFlake.rocm.overrideAttrs (old: {
-            cmakeFlags =
-              (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
-              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1031;gfx1200" ];
-          })
-        else
-          pkgs.llama-cpp;
+      llama = if hostName == "macbook" then pkgs.llama-cpp else pkgs.llama-cpp-rocm;
     in
     {
       home.packages = with pkgs; [
-        llmfit
         llama
+        llmfit
         stable-diffusion-cpp
         python3Packages.huggingface-hub
       ];
@@ -38,7 +24,7 @@
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -m ~/models/gemma-4-31B-it-Q6_K.gguf -ngl 99 -fa on -c 16384 --host 0.0.0.0 --port 8033";
+          ExecStart = "${llama}/bin/llama-server -m /home/sean/models/gemma-4-31B-it-Q6_K.gguf -ngl 99 -fa on -c 4096 -np 1 --no-mmproj --host 0.0.0.0 --port 8033";
           Restart = "on-failure";
         };
         Install = {
