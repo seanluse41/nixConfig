@@ -18,6 +18,21 @@
         python3Packages.huggingface-hub
       ];
 
+      programs.codex = {
+        enable = true;
+        settings = {
+          model_providers.local = {
+            name = "local llama.cpp";
+            base_url = "http://192.168.50.49:8033/v1";
+            wire_api = "responses";
+          };
+          profiles.local = {
+            model_provider = "local";
+            model = "local";
+          };
+        };
+      };
+
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {
           Description = "Gemma llama.cpp server";
