@@ -3,7 +3,7 @@
     { pkgs, lib, ... }:
     {
       imports = [
-        inputs.nix-openclaw.homeManagerModules.default
+        inputs.nix-openclaw.homeManagerModules.openclaw
       ];
 
       programs.openclaw = {
