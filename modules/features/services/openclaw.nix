@@ -9,7 +9,9 @@
 
       programs.openclaw = {
         enable = true;
+        package = inputs.nix-openclaw.packages.x86_64-linux.openclaw-gateway;
         config = {
+          memory.backend = "none";
           gateway = {
             mode = "local";
             auth.token = "/run/secrets/openclaw-gateway-token";
