@@ -1,4 +1,5 @@
-{ inputs, ... }: {
+{ inputs, ... }:
+{
   flake.homeModules.openclaw =
     { pkgs, lib, ... }:
     {
@@ -13,13 +14,33 @@
             mode = "local";
             auth.tokenFile = "/run/secrets/openclaw-gateway-token";
           };
-          llm = {
-            name = "ai-server";
-            type = "openai-compatible";
-            baseUrl = "http://192.168.50.49:8033/v1";
-            model = "qwen3";
-            timeoutMs = 60000;
+          models = {
+            mode = "merge";
+            providers = {
+              aiserver = {
+                baseUrl = "http://192.168.50.49:8033/v1";
+                apiKey = "local";
+                api = "openai-completions";
+                models = [
+                  {
+                    id = "qwen3";
+                    name = "Qwen3 (AI Server)";
+                    reasoning = false;
+                    input = [ "text" ];
+                    cost = {
+                      input = 0;
+                      output = 0;
+                      cacheRead = 0;
+                      cacheWrite = 0;
+                    };
+                    contextWindow = 32768;
+                    maxTokens = 4096;
+                  }
+                ];
+              };
+            };
           };
+          agents.defaults.model.primary = "aiserver/qwen3";
           channels.line = {
             channelAccessTokenFile = "/run/secrets/line-channel-access-token";
             channelSecretFile = "/run/secrets/line-channel-secret";
