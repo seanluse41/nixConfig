@@ -14,6 +14,7 @@
       inputs.sops-nix.nixosModules.sops
       inputs.home-manager.nixosModules.default
       {
+        nixpkgs.overlays = [ inputs.nix-openclaw.overlays.default ];
         nixpkgs.config.permittedInsecurePackages = [
           "openclaw-2026.4.22"
         ];
