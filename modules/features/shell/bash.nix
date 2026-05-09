@@ -23,7 +23,7 @@ in
           aiServer = "ssh ${consts.user}@${consts.network.aiServer}";
         };
         sessionVariables = {
-          SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
+          SOPS_AGE_KEY_FILE = "${config.xdg.configHome}/sops/age/keys.txt";
           CARGO_HOME = "${config.xdg.dataHome}/cargo";
           RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
           npm_config_cache = "${config.xdg.cacheHome}/npm";

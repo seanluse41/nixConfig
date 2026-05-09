@@ -14,12 +14,31 @@
       inputs.sops-nix.nixosModules.sops
       inputs.home-manager.nixosModules.default
       {
-        home-manager.extraSpecialArgs = { hostName = "homeServer"; };
+        sops = {
+          defaultSopsFile = "${self}/secrets/secrets.yaml";
+          age.keyFile = "/var/lib/sops-nix/key.txt";
+          secrets.line-channel-access-token = {
+            owner = "sean";
+          };
+          secrets.line-channel-secret = {
+            owner = "sean";
+          };
+          secrets.openclaw-gateway-token = {
+            owner = "sean";
+          };
+        };
+
+        networking.firewall.allowedTCPPorts = [ 18789 ];
+
+        home-manager.extraSpecialArgs = {
+          hostName = "homeServer";
+          inherit inputs;
+        };
         home-manager.users.sean.imports = with self.homeModules; [
           utils
           bash
           git
-          ai
+          openclaw
         ];
       }
     ];

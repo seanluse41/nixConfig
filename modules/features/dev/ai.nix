@@ -18,6 +18,8 @@
         python3Packages.huggingface-hub
       ];
 
+      #device 0: RX6700 XT (12gb)
+      #device 1: RX9060 XT (16gb)
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {
           Description = "Gemma llama.cpp server";
