@@ -12,7 +12,7 @@
         config = {
           gateway = {
             mode = "local";
-            auth.tokenFile = "/run/secrets/openclaw-gateway-token";
+            auth.token = "/run/secrets/openclaw-gateway-token";
           };
           models = {
             mode = "merge";
