@@ -11,6 +11,7 @@
       nfs
       jellyfin
       transmission
+      hermesAgent
       inputs.sops-nix.nixosModules.sops
       inputs.home-manager.nixosModules.default
       {
