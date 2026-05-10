@@ -7,10 +7,6 @@
         self.nixosModules.homeServerHardware
         inputs.sops-nix.nixosModules.sops
       ];
-      sops = {
-        defaultSopsFile = "${self}/secrets/secrets.yaml";
-        age.keyFile = "/var/lib/sops-nix/key.txt";
-      };
 
       nix.settings.trusted-public-keys = [
         "desktop:BhUdL4xwaKkc77fe+B7iQulMzkd5VWXSyQKZ2rnGp04="

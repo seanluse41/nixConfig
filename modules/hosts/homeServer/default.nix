@@ -19,8 +19,8 @@
           "openclaw-2026.4.22"
         ];
         sops = {
-          defaultSopsFile = "${self}/secrets/secrets.yaml";
-          age.keyFile = "/var/lib/sops-nix/key.txt";
+        defaultSopsFile = "${self}/secrets/secrets.yaml";
+        age.keyFile = "/home/sean/.config/sops/age/keys.txt";
           secrets.line-channel-access-token = {
             owner = "sean";
           };
