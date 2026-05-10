@@ -43,6 +43,7 @@
           bash
           git
           bun-baseline
+          openclaw
         ];
       }
     ];
