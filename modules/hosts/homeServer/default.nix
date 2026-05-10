@@ -14,12 +14,7 @@
       inputs.sops-nix.nixosModules.sops
       inputs.home-manager.nixosModules.default
       {
-        nixpkgs.overlays = [
-          inputs.nix-openclaw.overlays.default
-          (final: prev: {
-            qmd = final.writeShellScriptBin "qmd" "echo 'qmd disabled'";
-          })
-        ];
+        nixpkgs.overlays = [ inputs.nix-openclaw.overlays.default ];
         nixpkgs.config.permittedInsecurePackages = [
           "openclaw-2026.4.22"
         ];
@@ -47,7 +42,6 @@
           utils
           bash
           git
-          openclaw
         ];
       }
     ];

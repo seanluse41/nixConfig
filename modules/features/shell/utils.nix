@@ -35,6 +35,7 @@
         git
         gh
         jdk
+        bun
       ];
 
       programs.fastfetch = {
