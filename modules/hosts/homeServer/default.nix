@@ -14,22 +14,9 @@
       inputs.sops-nix.nixosModules.sops
       inputs.home-manager.nixosModules.default
       {
-        nixpkgs.overlays = [ inputs.nix-openclaw.overlays.default ];
-        nixpkgs.config.permittedInsecurePackages = [
-          "openclaw-2026.4.22"
-        ];
         sops = {
-        defaultSopsFile = "${self}/secrets/secrets.yaml";
-        age.keyFile = "/home/sean/.config/sops/age/keys.txt";
-          secrets.line-channel-access-token = {
-            owner = "sean";
-          };
-          secrets.line-channel-secret = {
-            owner = "sean";
-          };
-          secrets.openclaw-gateway-token = {
-            owner = "sean";
-          };
+          defaultSopsFile = "${self}/secrets/secrets.yaml";
+          age.keyFile = "/home/sean/.config/sops/age/keys.txt";
         };
 
         networking.firewall.allowedTCPPorts = [ 18789 ];
@@ -42,8 +29,6 @@
           utils
           bash
           git
-          bun-baseline
-          openclaw
         ];
       }
     ];
