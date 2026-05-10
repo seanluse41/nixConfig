@@ -21,7 +21,7 @@
       services.hermes-agent = {
         enable = true;
         settings = {
-          model.default = "aiserver/qwen3";
+          model.default = "unsloth/Qwen3.6-35B-A3B-GGUF:Q5_K_M";
           model.base_url = "http://192.168.50.49:8033/v1";
           model.api_key = "local";
         };
