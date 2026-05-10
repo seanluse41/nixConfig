@@ -42,6 +42,7 @@
           utils
           bash
           git
+          bun-baseline
         ];
       }
     ];
