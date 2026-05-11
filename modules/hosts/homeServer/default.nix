@@ -17,7 +17,7 @@
       {
         sops = {
           defaultSopsFile = "${self}/secrets/secrets.yaml";
-          age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+          sops.age.keyFile = "/home/sean/.config/sops/age/keys.txt";
         };
 
         networking.firewall.allowedTCPPorts = [ 18789 ];
