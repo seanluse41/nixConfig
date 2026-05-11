@@ -21,9 +21,19 @@
       services.hermes-agent = {
         enable = true;
         settings = {
-          model.default = "unsloth/Qwen3.6-35B-A3B-GGUF:Q5_K_M";
-          model.base_url = "http://192.168.50.49:8033/v1";
-          model.api_key = "local";
+          model = {
+            default = "unsloth/Qwen3.6-35B-A3B-GGUF:Q5_K_M";
+            provider = "custom";
+            base_url = "http://192.168.50.49:8033/v1";
+            api_key = "local";
+          };
+          custom_providers = [
+            {
+              name = "aiServer";
+              base_url = "http://192.168.50.49:8033/v1";
+              model = "unsloth/Qwen3.6-35B-A3B-GGUF:Q5_K_M";
+            }
+          ];
         };
         environmentFiles = [ config.sops.templates."hermes-env".path ];
         addToSystemPackages = true;
