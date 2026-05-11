@@ -34,6 +34,7 @@
 
       users.users.sean = {
         isNormalUser = true;
+        linger = true;
         extraGroups = [
           "wheel"
           "docker"
