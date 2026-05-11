@@ -37,7 +37,7 @@
       };
 
       sops.defaultSopsFile = "${self}/secrets/secrets.yaml";
-      sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+      sops.age.keyFile = "/home/sean/.config/sops/age/keys.txt";
       sops.secrets.luks-password = { };
       sops.secrets.aws-access-key-id = {
         owner = "sean";
@@ -219,10 +219,17 @@
             programs.ssh = {
               enable = true;
               enableDefaultConfig = false;
-              matchBlocks."home-server" = {
-                hostname = "192.168.50.110";
-                user = "sean";
-                identityFile = "~/.ssh/id_ed25519";
+              matchBlocks = {
+                "home-server" = {
+                  hostname = "192.168.50.110";
+                  user = "sean";
+                  identityFile = "~/.ssh/id_ed25519";
+                };
+                "ai-server" = {
+                  hostname = "192.168.50.49";
+                  user = "sean";
+                  identityFile = "~/.ssh/id_ed25519";
+                };
               };
             };
 
