@@ -25,6 +25,10 @@
         '';
       };
 
+      systemd.tmpfiles.rules = [
+        "Z /var/lib/hermes - hermes hermes - -"
+      ];
+
       services.hermes-agent = {
         enable = true;
         settings = {
