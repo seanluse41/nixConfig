@@ -12,7 +12,10 @@
           sha256 = "0l67xlql0fwdz1xy71sjdxrnjprz49d0mb6s0l10js3h58lj92lx";
         };
 
-        nativeBuildInputs = [ pkgs.unzip pkgs.patchelf ];
+        nativeBuildInputs = [
+          pkgs.unzip
+          pkgs.patchelf
+        ];
 
         unpackPhase = "unzip $src";
 

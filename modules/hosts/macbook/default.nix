@@ -19,7 +19,6 @@
       zsh
       kintone
       vscode
-      communications
       hugo
       devPackages
       utils

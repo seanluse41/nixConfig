@@ -11,11 +11,12 @@
         nixfmt
         nh
         nil
+        nixd
         sops
         age
         nix-tree
         deadnix
-        # 
+        #
         erdtree
         wget
         htop

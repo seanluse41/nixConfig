@@ -6,7 +6,7 @@
     pi256 = "192.168.50.191";
     aiServer = "192.168.50.49";
   };
-  
+
   ports = {
     udpReboot = 9999;
     ssh = 22;
@@ -14,6 +14,6 @@
     https = 443;
     immich = 8080;
   };
-  
+
   user = "sean";
 }

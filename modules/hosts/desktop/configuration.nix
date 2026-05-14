@@ -45,7 +45,9 @@
       sops.secrets.aws-secret-access-key = {
         owner = "sean";
       };
-      sops.secrets.GITHUB_TOKEN = { owner = "sean"; };
+      sops.secrets.GITHUB_TOKEN = {
+        owner = "sean";
+      };
 
       nix.settings.secret-key-files = [ "/var/lib/sops-nix/signing-key.sec" ];
 
