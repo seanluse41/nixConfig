@@ -27,7 +27,7 @@
       ai
       {
         home.username = "seanluse";
-        home.homeDirectory = "/Users/sean";
+        home.homeDirectory = "/Users/seanluse";
         home.stateVersion = "25.05";
         programs.home-manager.enable = true;
         sops = {
@@ -35,8 +35,6 @@
           age.keyFile = "/Users/sean/.config/sops/age/keys.txt";
         };
         home.packages = with inputs.nixpkgs.legacyPackages.aarch64-darwin; [
-          age
-          sops
           nerd-fonts.jetbrains-mono
         ];
       }

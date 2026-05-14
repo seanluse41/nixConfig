@@ -10,6 +10,7 @@
         # nix
         nixfmt
         nh
+        nil
         sops
         age
         nix-tree
