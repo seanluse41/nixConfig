@@ -1,10 +1,9 @@
 { ... }: {
-  flake.homeModules.zsh = { ... }: {
+  flake.homeModules.zsh = { config, ... }: {
     programs.zsh = {
       enable = true;
       shellAliases = {
-        rebuild = "nh home switch ~/nixConfig --configuration seanluse";
-        gemma = "llama-server -hf mlx-community/gemma-4-31B-it-assistant-bf16 --jinja -c 16384 --host 127.0.0.1 --port 8033 -np 1 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap";
+        rebuild = "nh darwin switch ~/nixConfig";
       };
       initContent = ''
         fastfetch

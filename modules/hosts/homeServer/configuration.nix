@@ -12,6 +12,8 @@
         "desktop:BhUdL4xwaKkc77fe+B7iQulMzkd5VWXSyQKZ2rnGp04="
       ];
 
+      sops.secrets.GITHUB_TOKEN = { owner = "sean"; };
+
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 

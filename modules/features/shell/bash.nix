@@ -28,10 +28,10 @@ in
           RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
           npm_config_cache = "${config.xdg.cacheHome}/npm";
         };
-        initExtra = ''
-          fastfetch
-          export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
-        '';
+initExtra = ''
+  fastfetch
+  export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+'';
       };
     };
 }
