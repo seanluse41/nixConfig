@@ -1,7 +1,12 @@
 { inputs, ... }:
 {
   flake.homeModules.ai =
-    { pkgs, lib, hostName, ... }:
+    {
+      pkgs,
+      lib,
+      hostName,
+      ...
+    }:
     let
       webuiAssets = {
         "index.html" = pkgs.fetchurl {
@@ -23,21 +28,22 @@
       };
 
       llama =
-        if hostName == "macbook"
-        then pkgs.llama-cpp
-        else inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
-          cmakeFlags =
-            (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
-            ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1031;gfx1200" ];
+        if hostName == "macbook" then
+          pkgs.llama-cpp
+        else
+          inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
+            cmakeFlags =
+              (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
+              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1031;gfx1200" ];
 
-          preBuild = (old.preBuild or "") + ''
-            mkdir -p ../tools/server/public
-            cp ${webuiAssets."index.html"} ../tools/server/public/index.html
-            cp ${webuiAssets."bundle.js"} ../tools/server/public/bundle.js
-            cp ${webuiAssets."bundle.css"} ../tools/server/public/bundle.css
-            cp ${webuiAssets."loading.html"} ../tools/server/public/loading.html
-          '';
-        });
+            preBuild = (old.preBuild or "") + ''
+              mkdir -p ../tools/server/public
+              cp ${webuiAssets."index.html"} ../tools/server/public/index.html
+              cp ${webuiAssets."bundle.js"} ../tools/server/public/bundle.js
+              cp ${webuiAssets."bundle.css"} ../tools/server/public/bundle.css
+              cp ${webuiAssets."loading.html"} ../tools/server/public/loading.html
+            '';
+          });
     in
     {
       home.packages = with pkgs; [
@@ -53,7 +59,7 @@
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:UD-Q4_K_XL -ngl 99 -c 8192 -fa on -np 1 --spec-type mtp --spec-draft-n-max 2 --host 0.0.0.0 --port 8033 --webui-mcp-proxy";
+          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:UD-Q5_K_M -ngl 99 -c 65536 -fa on -np 1 --spec-type draft-mtp --spec-draft-n-max 2 --host 0.0.0.0 --port 8033 --webui-mcp-proxy";
           Restart = "on-failure";
         };
         Install = {
