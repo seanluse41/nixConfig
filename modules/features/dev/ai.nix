@@ -9,14 +9,7 @@
     }:
     let
       llama =
-        if hostName == "macbook" then
-          pkgs.llama-cpp
-        else
-          inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
-            cmakeFlags =
-              (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
-              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1031;gfx1200" ];
-          });
+        if hostName == "macbook" then pkgs.llama-cpp else inputs.llama-cpp.packages.${pkgs.system}.rocm;
     in
     {
       home.packages = with pkgs; [
