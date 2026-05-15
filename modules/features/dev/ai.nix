@@ -1,27 +1,43 @@
 { inputs, ... }:
 {
   flake.homeModules.ai =
-    {
-      pkgs,
-      lib,
-      hostName,
-      ...
-    }:
+    { pkgs, lib, hostName, ... }:
     let
-      llama =
-        if hostName == "macbook" then
-          pkgs.llama-cpp
-        else
-          inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
-            cmakeFlags =
-              (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
-              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1031;gfx1200" ];
+      webuiAssets = {
+        "index.html" = pkgs.fetchurl {
+          url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/index.html?download=true";
+          sha256 = pkgs.lib.fakeHash;
+        };
+        "bundle.js" = pkgs.fetchurl {
+          url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.js?download=true";
+          sha256 = pkgs.lib.fakeHash;
+        };
+        "bundle.css" = pkgs.fetchurl {
+          url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.css?download=true";
+          sha256 = pkgs.lib.fakeHash;
+        };
+        "loading.html" = pkgs.fetchurl {
+          url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/loading.html?download=true";
+          sha256 = pkgs.lib.fakeHash;
+        };
+      };
 
-            preConfigure = (old.preConfigure or "") + ''
-              mkdir -p tools/server/public
-              echo "<html></html>" > tools/server/public/index.html
-            '';
-          });
+      llama =
+        if hostName == "macbook"
+        then pkgs.llama-cpp
+        else inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
+          cmakeFlags =
+            (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
+            ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1031;gfx1200" ];
+
+          preBuild = (old.preBuild or "") + ''
+            mkdir -p ../tools/server/public
+            cp ${webuiAssets."index.html"} ../tools/server/public/index.html
+            cp ${webuiAssets."bundle.js"} ../tools/server/public/bundle.js
+            cp ${webuiAssets."bundle.css"} ../tools/server/public/bundle.css
+            cp ${webuiAssets."loading.html"} ../tools/server/public/loading.html
+          '';
+        });
     in
     {
       home.packages = with pkgs; [
