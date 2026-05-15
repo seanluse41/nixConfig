@@ -6,19 +6,19 @@
       webuiAssets = {
         "index.html" = pkgs.fetchurl {
           url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/index.html?download=true";
-          sha256 = pkgs.lib.fakeHash;
+          sha256 = "sha256-PqVtrGlFbswvMa2E2ekSFVrjfyR6JI1/KBB6Ita8SvM=";
         };
         "bundle.js" = pkgs.fetchurl {
           url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.js?download=true";
-          sha256 = pkgs.lib.fakeHash;
+          sha256 = "sha256-d/MFxrXtiC3MSesQCzA38QQXkfchhKaOJOj3MNKcTDo=";
         };
         "bundle.css" = pkgs.fetchurl {
           url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.css?download=true";
-          sha256 = pkgs.lib.fakeHash;
+          sha256 = "sha256-TrHUVuoyZTUcAbWqPXcG0hXR5M78L7cN5Y99cD02wXs=";
         };
         "loading.html" = pkgs.fetchurl {
           url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/loading.html?download=true";
-          sha256 = pkgs.lib.fakeHash;
+          sha256 = "sha256-JQAFfjmrgVGNFrKPXQGfYQe1irtHsqMNM4YtnntwPNw=";
         };
       };
 
