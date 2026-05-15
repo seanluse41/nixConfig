@@ -18,7 +18,7 @@ in
           ssd = "cd /mnt/data/";
           tauriShell = "nix develop ~/nixConfig#tauri";
           tree = "erd -H .";
-          gemma = "llama-server -hf unsloth/gemma-4-31B-it-GGUF --jinja -c 8192 --host 0.0.0.0 --port 8033 -np 1 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap -t 8 -tb 8";
+          gemma = "llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:UD-Q4_K_XL -ngl 99 -c 8192 -fa on -np 1 --spec-type mtp --spec-draft-n-max 2 --host 0.0.0.0 --port 8033 --webui-mcp-proxy";
           rebuildAiServer = "nh os switch ~/nixConfig -H aiServer";
           aiServer = "ssh ${consts.user}@${consts.network.aiServer}";
         };

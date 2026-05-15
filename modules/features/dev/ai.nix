@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.homeModules.ai =
     {
@@ -8,7 +8,15 @@
       ...
     }:
     let
-      llama = if hostName == "macbook" then pkgs.llama-cpp else pkgs.llama-cpp-rocm;
+      llama =
+        if hostName == "macbook" then
+          pkgs.llama-cpp
+        else
+          inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
+            cmakeFlags =
+              (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
+              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1031;gfx1200" ];
+          });
     in
     {
       home.packages = with pkgs; [
@@ -18,15 +26,13 @@
         python3Packages.huggingface-hub
       ];
 
-      #device 0: RX6700 XT (12gb)
-      #device 1: RX9060 XT (16gb)
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {
-          Description = "Gemma llama.cpp server";
+          Description = "Qwen llama.cpp server";
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-35B-A3B-GGUF:Q5_K_M --jinja -c 65536 --host 0.0.0.0 --port 8033 -np 1 --min-p 0.0 --webui-mcp-proxy --no-mmproj --no-mmap -t 8 -tb 8";
+          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:UD-Q4_K_XL -ngl 99 -c 8192 -fa on -np 1 --spec-type mtp --spec-draft-n-max 2 --host 0.0.0.0 --port 8033 --webui-mcp-proxy";
           Restart = "on-failure";
         };
         Install = {
