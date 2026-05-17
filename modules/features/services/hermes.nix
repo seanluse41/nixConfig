@@ -33,7 +33,7 @@
         enable = true;
         settings = {
           model = {
-            default = "unsloth/Qwen3.6-27B-MTP-GGUF:Q6_K";
+            default = "unsloth/Qwen3.6-27B-MTP-GGUF:Q5_K_M";
             provider = "custom";
             base_url = "http://192.168.50.49:8033/v1";
             api_key = "local";
@@ -42,7 +42,7 @@
             {
               name = "aiServer";
               base_url = "http://192.168.50.49:8033/v1";
-              model = "unsloth/Qwen3.6-27B-MTP-GGUF:Q6_K";
+              model = "unsloth/Qwen3.6-27B-MTP-GGUF:Q5_K_M";
             }
           ];
           gateway.platforms.line.enabled = true;
