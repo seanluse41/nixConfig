@@ -32,6 +32,8 @@
       environment.systemPackages = with pkgs; [
         wine-staging
         winetricks
+        fuse-overlayfs
+        bubblewrap
         (heroic.override { extraPkgs = _pkgs: [ gamescope ]; })
       ];
     };
