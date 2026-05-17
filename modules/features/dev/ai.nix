@@ -59,7 +59,7 @@
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:Q6_K -c 65536 -fa on -np 1 --spec-type draft-mtp --spec-draft-n-max 2 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja --min-p 0.0 -t 8 -tb 8 -ctk q8_0 -ctv q8_0";
+          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:Q5_K_M -c 65536 -fa on -np 1 --spec-type draft-mtp --spec-draft-n-max 2 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja --min-p 0.0 -t 8 -tb 8 -ctk q8_0 -ctv q8_0";
           Restart = "on-failure";
         };
         Install = {
