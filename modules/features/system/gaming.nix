@@ -34,6 +34,7 @@
         winetricks
         fuse-overlayfs
         bubblewrap
+        dwarfs
         (heroic.override { extraPkgs = _pkgs: [ gamescope ]; })
       ];
     };
