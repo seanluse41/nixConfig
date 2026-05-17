@@ -32,6 +32,7 @@
       environment.systemPackages = with pkgs; [
         wine-staging
         winetricks
+        wineWow64Packages.staging
         fuse-overlayfs
         bubblewrap
         dwarfs
