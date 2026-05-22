@@ -7,6 +7,7 @@
         unzip
         zip
         unrar
+        p7zip
         # nix
         nixfmt
         nh
