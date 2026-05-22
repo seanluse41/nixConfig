@@ -14,6 +14,7 @@
       {
         home-manager.extraSpecialArgs = {
           hostName = "desktop";
+          inherit (inputs) nixpkgs-master;
         };
         home-manager.users.sean.imports = with self.homeModules; [
           inputs.nix-index-database.homeModules.nix-index

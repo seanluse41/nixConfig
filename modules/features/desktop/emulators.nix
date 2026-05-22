@@ -1,4 +1,10 @@
 { ... }:
+let
+  masterPkgs = import nixpkgs-master {
+    inherit (pkgs) system;
+    config.allowUnfree = true;
+  };
+in
 {
   flake.homeModules.emulators =
     { pkgs, ... }:
@@ -14,6 +20,7 @@
         shipwright
         nxengine-evo
         easyrpg-player
+        masterPkgs.dusklight
       ];
 
       services.flatpak.packages = [
