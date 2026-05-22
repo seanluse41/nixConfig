@@ -1,13 +1,13 @@
 { ... }:
-let
-  masterPkgs = import nixpkgs-master {
-    inherit (pkgs) system;
-    config.allowUnfree = true;
-  };
-in
 {
   flake.homeModules.emulators =
-    { pkgs, ... }:
+    { pkgs, nixpkgs-master, ... }:
+    let
+      masterPkgs = import nixpkgs-master {
+        inherit (pkgs) system;
+        config.allowUnfree = true;
+      };
+    in
     {
       home.packages = with pkgs; [
         dolphin-emu

@@ -451,6 +451,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1779422715,
+        "narHash": "sha256-8+g6QfffimwwzDmRZJsvFYe7/4jlDwnesb+it+rR8AE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "14c39d3c62a7f0bfb2a3362a352de6edd2fa3903",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-sass": {
       "locked": {
         "lastModified": 1769164347,
@@ -696,6 +712,7 @@
         "nix-openclaw": "nix-openclaw",
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-hugo": "nixpkgs-hugo",
+        "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-sass": "nixpkgs-sass",
         "sops-nix": "sops-nix",
         "tauri-shell": "tauri-shell"
