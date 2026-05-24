@@ -22,7 +22,7 @@ in
         };
         "bundle.css" = pkgs.fetchurl {
           url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.css?download=true";
-          sha256 = "sha256-TrHUVuoyZTUcAbWqPXcG0hXR5M78L7cN5Y99cD02wXs=";
+          sha256 = "sha256-Ar/LX+k/dcOczX2jbMJPoh7s/dHP7uDr5k2Y/yayfpM=";
         };
         "loading.html" = pkgs.fetchurl {
           url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/loading.html?download=true";
@@ -30,21 +30,22 @@ in
         };
       };
 
-    llama =
-      if hostName == "macbook" then
-        pkgs.llama-cpp
-      else
-        (inputs.llama-cpp.packages.${pkgs.system}.rocm.override {
-          rocmGpuTargets = "gfx1031;gfx1200,gfx1201";
-        }).overrideAttrs (old: {
-          postConfigure = (old.postConfigure or "") + ''
-            mkdir -p tools/ui/dist
-            cp ${webuiAssets."index.html"} tools/ui/dist/index.html
-            cp ${webuiAssets."bundle.js"} tools/ui/dist/bundle.js
-            cp ${webuiAssets."bundle.css"} tools/ui/dist/bundle.css
-            cp ${webuiAssets."loading.html"} tools/ui/dist/loading.html
-          '';
-        });
+      llama =
+        if hostName == "macbook" then
+          pkgs.llama-cpp
+        else
+          (inputs.llama-cpp.packages.${pkgs.system}.rocm.override {
+            rocmGpuTargets = "gfx1031;gfx1200,gfx1201";
+          }).overrideAttrs
+            (old: {
+              postConfigure = (old.postConfigure or "") + ''
+                mkdir -p tools/ui/dist
+                cp ${webuiAssets."index.html"} tools/ui/dist/index.html
+                cp ${webuiAssets."bundle.js"} tools/ui/dist/bundle.js
+                cp ${webuiAssets."bundle.css"} tools/ui/dist/bundle.css
+                cp ${webuiAssets."loading.html"} tools/ui/dist/loading.html
+              '';
+            });
     in
     {
       home.packages = with pkgs; [
