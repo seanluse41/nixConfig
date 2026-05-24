@@ -18,7 +18,7 @@ in
         };
         "bundle.js" = pkgs.fetchurl {
           url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.js?download=true";
-          sha256 = "sha256-D13SEsm7JzzRTtykB/fTUJiAB1sKnKcjVX1bdYbGDyY=";
+          sha256 = "sha256-YEAcszOxf9yk1MjuyT4iEAEJmdkdtJTBXgOT5Hmw6+0=";
         };
         "bundle.css" = pkgs.fetchurl {
           url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.css?download=true";
