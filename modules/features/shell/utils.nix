@@ -18,6 +18,7 @@
         nix-tree
         deadnix
         #
+        pciutils
         erdtree
         wget
         htop
