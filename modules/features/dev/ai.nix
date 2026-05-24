@@ -35,7 +35,7 @@ in
         pkgs.llama-cpp
       else
         (inputs.llama-cpp.packages.${pkgs.system}.rocm.override {
-          rocmGpuTargets = "gfx1031;gfx1200";
+          rocmGpuTargets = "gfx1031;gfx1200,gfx1201";
         }).overrideAttrs (old: {
           postConfigure = (old.postConfigure or "") + ''
             mkdir -p tools/ui/dist
