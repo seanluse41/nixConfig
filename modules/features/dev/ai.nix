@@ -58,8 +58,9 @@ in
       #intel skylake i5
       #8gb ddr4 ram
       #asusrock z270 exteme 4
-      #device 0: RX6700 XT (12gb)
+      #device 0: RX9070 XT (16gb)
       #device 1: RX9060 XT (16gb)
+      #device 0: RX6700 XT (12gb)
 
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {

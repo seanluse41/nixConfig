@@ -49,7 +49,7 @@
       nix.settings.cores = 0;
 
       environment.variables = {
-        ROCM_TARGET_LIST = "gfx1031,gfx1200";
+        ROCM_TARGET_LIST = "gfx1031,gfx1200,gfx1201";
       };
 
       systemd.tmpfiles.rules = [
