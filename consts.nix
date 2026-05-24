@@ -19,8 +19,8 @@
 
   # Models
   models = {
-    # Qwen3.6 27B dense @ Q5_K_M — 19.8 GB
-    qwen27b = "unsloth/Qwen3.6-27B-MTP-GGUF";
+    # Qwen3.6 27B dense @ Q8: 35.8 GB
+    qwen27b = "unsloth/Qwen3.6-27B-MTP-GGUF:UD-Q8_K_XL";
     # Qwen3.6 35B-A3B @ UD-Q4_K_S: 21.4 GB
     qwen35b = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF";
     # Gemma 4 31B @ Q4_K_M: 18.3 GB
