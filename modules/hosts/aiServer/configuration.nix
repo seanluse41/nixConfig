@@ -52,6 +52,20 @@
         ROCM_TARGET_LIST = "gfx1031,gfx1200,gfx1201";
       };
 
+      nixpkgs.overlays = [
+        (final: prev: {
+          rocmPackages = prev.rocmPackages // {
+            rocblas = prev.rocmPackages.rocblas.override {
+              gpuTargets = [
+                "gfx1031"
+                "gfx1200"
+                "gfx1201"
+              ];
+            };
+          };
+        })
+      ];
+
       systemd.tmpfiles.rules = [
         "L+ /opt/rocm/hip - - - - ${pkgs.rocmPackages.clr}"
       ];
