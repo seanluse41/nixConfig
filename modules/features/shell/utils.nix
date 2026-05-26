@@ -17,8 +17,11 @@
         age
         nix-tree
         deadnix
-        #
+        # GPU stuff
         pciutils
+        rocmPackages.rocminfo
+        rocmPackages.rocm-smi
+        #
         erdtree
         wget
         htop
