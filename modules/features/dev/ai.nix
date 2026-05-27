@@ -12,12 +12,7 @@ in
     }:
     let
       llama =
-        if hostName == "macbook" then
-          pkgs.llama-cpp
-        else
-          (inputs.llama-cpp.packages.x86_64-linux.rocm.overrideAttrs (prev: {
-            cmakeFlags = prev.cmakeFlags ++ [ "-DAMDGPU_TARGETS=gfx1201;gfx1031" ];
-          }));
+        if hostName == "macbook" then pkgs.llama-cpp else inputs.llama-cpp.packages.x86_64-linux.rocm;
     in
     {
       home.packages = with pkgs; [
