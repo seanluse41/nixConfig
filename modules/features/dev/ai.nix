@@ -1,7 +1,4 @@
 { inputs, ... }:
-let
-  consts = import ../../../consts.nix;
-in
 {
   flake.homeModules.ai =
     {
@@ -11,8 +8,40 @@ in
       ...
     }:
     let
+      webuiAssets = {
+        "index.html" = pkgs.fetchurl {
+          url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/index.html?download=true";
+          sha256 = "sha256-PqVtrGlFbswvMa2E2ekSFVrjfyR6JI1/KBB6Ita8SvM=";
+        };
+        "bundle.js" = pkgs.fetchurl {
+          url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.js?download=true";
+          sha256 = "sha256-47QWMrsONxlZSjA9FmtoFzmSFro7BB3OQODcG+0T8bY=";
+        };
+        "bundle.css" = pkgs.fetchurl {
+          url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/bundle.css?download=true";
+          sha256 = "sha256-Ar/LX+k/dcOczX2jbMJPoh7s/dHP7uDr5k2Y/yayfpM=";
+        };
+        "loading.html" = pkgs.fetchurl {
+          url = "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/loading.html?download=true";
+          sha256 = "sha256-JQAFfjmrgVGNFrKPXQGfYQe1irtHsqMNM4YtnntwPNw=";
+        };
+      };
       llama =
-        if hostName == "macbook" then pkgs.llama-cpp else inputs.llama-cpp.packages.x86_64-linux.rocm;
+        if hostName == "macbook" then
+          pkgs.llama-cpp
+        else
+          inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
+            cmakeFlags =
+              (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
+              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1200;gfx1201" ];
+            preBuild = (old.preBuild or "") + ''
+              mkdir -p ../tools/server/public
+              cp ${webuiAssets."index.html"} ../tools/server/public/index.html
+              cp ${webuiAssets."bundle.js"} ../tools/server/public/bundle.js
+              cp ${webuiAssets."bundle.css"} ../tools/server/public/bundle.css
+              cp ${webuiAssets."loading.html"} ../tools/server/public/loading.html
+            '';
+          });
     in
     {
       home.packages = with pkgs; [
@@ -21,22 +50,13 @@ in
         stable-diffusion-cpp
         python3Packages.huggingface-hub
       ];
-
-      #ai server:
-      #intel skylake i5
-      #8gb ddr4 ram
-      #asusrock z270 exteme 4
-      #device 0: RX9070 XT (16gb)
-      #device 1: RX9060 XT (16gb)
-      #device 2: RX6700 XT (12gb)
-
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {
           Description = "Qwen llama.cpp server";
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja -t 8 -tb 8 -np 2 --kv-unified --no-mmproj";
+          ExecStart = "${llama}/bin/llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:Q6_K -c 65536 -fa on -np 1 --spec-type draft-mtp --spec-draft-n-max 2 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja --min-p 0.0 -t 8 -tb 8 -ctk q8_0 -ctv q8_0";
           Restart = "on-failure";
         };
         Install = {
