@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 let
   consts = import ../../../consts.nix;
 in
@@ -15,7 +15,7 @@ in
         if hostName == "macbook" then
           pkgs.llama-cpp
         else
-          pkgs.llama-cpp-vulkan;
+          inputs.llama-cpp.packages.x86_64-linux.rocm;
     in
     {
       home.packages = with pkgs; [
@@ -39,7 +39,7 @@ in
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja -t 8 -tb 8 -np 2 --kv-unified --no-mmproj";
+          ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja -t 8 -tb 8 --no-mmproj";
           Restart = "on-failure";
         };
         Install = {
