@@ -34,12 +34,12 @@
             cmakeFlags =
               (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
               ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1200;gfx1201" ];
-            preBuild = (old.preBuild or "") + ''
-              mkdir -p build/tools/ui/dist
-              cp ${webuiAssets."index.html"} build/tools/ui/dist/index.html
-              cp ${webuiAssets."bundle.js"} build/tools/ui/dist/bundle.js
-              cp ${webuiAssets."bundle.css"} build/tools/ui/dist/bundle.css
-              cp ${webuiAssets."loading.html"} build/tools/ui/dist/loading.html
+            preConfigure = (old.preConfigure or "") + ''
+              mkdir -p tools/ui/dist
+              cp ${webuiAssets."index.html"} tools/ui/dist/index.html
+              cp ${webuiAssets."bundle.js"} tools/ui/dist/bundle.js
+              cp ${webuiAssets."bundle.css"} tools/ui/dist/bundle.css
+              cp ${webuiAssets."loading.html"} tools/ui/dist/loading.html
             '';
           });
     in
