@@ -42,6 +42,7 @@
         extraPackages = with pkgs; [
           rocmPackages.clr
           rocmPackages.clr.icd
+          mesa
         ];
       };
 
