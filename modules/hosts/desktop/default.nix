@@ -10,6 +10,7 @@
     system = "x86_64-linux";
     modules = with self.nixosModules; [
       desktopConfig
+      ccache
       inputs.home-manager.nixosModules.default
       {
         home-manager.extraSpecialArgs = {
