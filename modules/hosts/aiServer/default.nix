@@ -4,6 +4,7 @@
     system = "x86_64-linux";
     modules = with self.nixosModules; [
       aiServerConfig
+      ccache
       tailscale
       inputs.home-manager.nixosModules.default
       {
