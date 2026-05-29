@@ -91,6 +91,7 @@
             home.stateVersion = "24.11";
           };
       };
+      nix.settings.extra-sandbox-paths = [ "/var/cache/ccache" ];
 
       system.stateVersion = "24.11";
     };

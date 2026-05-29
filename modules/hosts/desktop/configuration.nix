@@ -253,6 +253,8 @@
               [GroupOrder]
               0=Default
             '';
+            
+            nix.settings.extra-sandbox-paths = [ "/var/cache/ccache" ];
           };
       };
     };

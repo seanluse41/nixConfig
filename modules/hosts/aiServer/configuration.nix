@@ -92,6 +92,8 @@
         options = "--delete-older-than 7d";
       };
 
+      nix.settings.extra-sandbox-paths = [ "/var/cache/ccache" ];
+
       nixpkgs.config.allowUnfree = true;
       system.stateVersion = "25.11";
     };
