@@ -42,7 +42,7 @@ in
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja -t 8 -tb 8 -np 2 --kv-unified --no-mmproj";
+          ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --spec-type draft-mtp --spec-draft-n-max 3 --webui-mcp-proxy --jinja -t 4 -tb 4 -np 1 --kv-unified --no-mmproj -ctk q8_0 -ctv q8_0";
           Restart = "on-failure";
           Environment = "HSA_OVERRIDE_GFX_VERSION=12.0.1";
         };
