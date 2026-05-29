@@ -93,6 +93,9 @@
       };
 
       nix.settings.extra-sandbox-paths = [ "/var/cache/ccache" ];
+      environment.variables = {
+        ROCM_TARGET_LIST = "gfx1200,gfx1201";
+      };
 
       nixpkgs.config.allowUnfree = true;
       system.stateVersion = "25.11";
