@@ -8,6 +8,7 @@ in
       pkgs,
       lib,
       hostName,
+      config,
       ...
     }:
     let
@@ -19,6 +20,13 @@ in
             cmakeFlags =
               (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
               ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1200;gfx1201" ];
+            preConfigure = (old.preConfigure or "") + ''
+              export CCACHE_DIR="${config.programs.ccache.cacheDir}"
+              export CCACHE_COMPRESS=1
+              export CCACHE_UMASK=007
+            '';
+            CMAKE_C_COMPILER_LAUNCHER = "${pkgs.ccache}/bin/ccache";
+            CMAKE_CXX_COMPILER_LAUNCHER = "${pkgs.ccache}/bin/ccache";
           });
     in
     {
