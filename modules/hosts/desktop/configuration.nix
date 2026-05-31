@@ -222,16 +222,18 @@
             programs.ssh = {
               enable = true;
               enableDefaultConfig = false;
-              matchBlocks = {
-                "home-server" = {
-                  hostname = "192.168.50.110";
-                  user = "sean";
-                  identityFile = "~/.ssh/id_ed25519";
-                };
-                "ai-server" = {
-                  hostname = "192.168.50.49";
-                  user = "sean";
-                  identityFile = "~/.ssh/id_ed25519";
+              settings = {
+                matchBlocks = {
+                  "home-server" = {
+                    hostname = "192.168.50.110";
+                    user = "sean";
+                    identityFile = "~/.ssh/id_ed25519";
+                  };
+                  "ai-server" = {
+                    hostname = "192.168.50.49";
+                    user = "sean";
+                    identityFile = "~/.ssh/id_ed25519";
+                  };
                 };
               };
             };
@@ -253,7 +255,7 @@
               [GroupOrder]
               0=Default
             '';
-            
+
             nix.settings.extra-sandbox-paths = [ "/var/cache/ccache" ];
           };
       };

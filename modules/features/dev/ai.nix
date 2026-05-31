@@ -21,7 +21,7 @@ in
               (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
               ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1200;gfx1201" ];
             preConfigure = (old.preConfigure or "") + ''
-              export CCACHE_DIR="${config.programs.ccache.cacheDir}"
+              export CCACHE_DIR="/var/cache/ccache"
               export CCACHE_COMPRESS=1
               export CCACHE_UMASK=007
             '';
@@ -43,6 +43,7 @@ in
       #asusrock z270 exteme 4
       #device 0: RX9070 XT (16gb)
       #device 1: RX9060 XT (16gb)
+      #device 2: RX6700 xt (12gb) <- currently disabled
 
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {
