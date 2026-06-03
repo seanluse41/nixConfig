@@ -9,8 +9,7 @@ in
       programs.bash = {
         enable = true;
         shellAliases = {
-          rebuild = "nh os switch ~/nixConfig -H desktop";
-          rebuildServer = "nh os switch ~/nixConfig -H homeServer";
+          rebuild = "nh os switch ~/nixConfig -H ${hostName}";
           homeServer = "ssh ${consts.user}@${consts.network.homeServer}";
           photoFrame = "ssh ${consts.user}@${consts.network.photoFrame}";
           pi-hole = "ssh ${consts.user}@${consts.network.piHole}";
@@ -20,7 +19,6 @@ in
           tree = "erd -H .";
           gemma = "llama-server -hf ${consts.models.gemma31b} -c 16384 -fa on -ngl 99 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja --min-p 0.0 -t 8 -tb 8 -ctk q8_0 -ctv q8_0 --kv-unified --no-mmproj";
           qwen = "llama-server -hf ${consts.models.qwen27b} -c 16384 -fa on -ngl 99 --spec-type draft-mtp --spec-draft-n-max 3 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja --min-p 0.0 -t 8 -tb 8 -ctk q8_0 -ctv q8_0 --kv-unified --no-mmproj";
-          rebuildAiServer = "nh os switch ~/nixConfig -H aiServer";
           aiServer = "ssh ${consts.user}@${consts.network.aiServer}";
         };
         sessionVariables = {
