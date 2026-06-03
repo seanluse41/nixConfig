@@ -1,7 +1,13 @@
 { ... }:
 {
   flake.homeModules.utils =
-    { pkgs, ... }:
+    { pkgs, lib, hostName, ... }:
+    let
+      rocmPkgs = lib.optionals (hostName != "macbook") [
+        pkgs.rocmPackages.rocminfo
+        pkgs.rocmPackages.rocm-smi
+      ];
+    in
     {
       home.packages = with pkgs; [
         unzip
@@ -19,8 +25,7 @@
         deadnix
         # GPU stuff
         pciutils
-        rocmPackages.rocminfo
-        rocmPackages.rocm-smi
+      ] ++ rocmPkgs ++ (with pkgs; [
         #
         erdtree
         wget
@@ -42,7 +47,7 @@
         git
         gh
         jdk
-      ];
+      ]);
 
       programs.fastfetch = {
         enable = true;
