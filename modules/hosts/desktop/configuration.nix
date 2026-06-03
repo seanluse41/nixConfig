@@ -222,18 +222,16 @@
             programs.ssh = {
               enable = true;
               enableDefaultConfig = false;
-              settings = {
-                matchBlocks = {
-                  "home-server" = {
-                    hostname = "192.168.50.110";
-                    user = "sean";
-                    identityFile = "~/.ssh/id_ed25519";
-                  };
-                  "ai-server" = {
-                    hostname = "192.168.50.49";
-                    user = "sean";
-                    identityFile = "~/.ssh/id_ed25519";
-                  };
+              matchBlocks = {
+                "home-server" = {
+                  hostname = "192.168.50.110";
+                  user = "sean";
+                  identityFile = "~/.ssh/id_ed25519";
+                };
+                "ai-server" = {
+                  hostname = "192.168.50.49";
+                  user = "sean";
+                  identityFile = "~/.ssh/id_ed25519";
                 };
               };
             };
