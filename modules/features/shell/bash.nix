@@ -4,7 +4,7 @@ let
 in
 {
   flake.homeModules.bash =
-    { config, ... }:
+    { config, hostName, ... }:
     {
       programs.bash = {
         enable = true;
