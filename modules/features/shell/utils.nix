@@ -39,6 +39,7 @@
         rustup
         # node
         nodejs
+        pnpm
         npm-check-updates
         clang
         stripe-cli
