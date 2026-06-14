@@ -25,6 +25,7 @@ in
           LINE_CHANNEL_ACCESS_TOKEN=${config.sops.placeholder."line-channel-access-token"}
           LINE_CHANNEL_SECRET=${config.sops.placeholder."line-channel-secret"}
           LINE_ALLOWED_USERS=${config.sops.placeholder."LINE_ALLOWED_USERS"}
+          LINE_HOME_CHANNEL=Ud032eceead707c6f0d708bed4318fb9e
           LINE_PUBLIC_URL=https://home-server.tail2a5164.ts.net
         '';
       };

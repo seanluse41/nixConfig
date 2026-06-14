@@ -11,6 +11,7 @@
       uptimeKuma
       nfs
       jellyfin
+      kintone
       transmission
       hermesAgent
       inputs.sops-nix.nixosModules.sops
