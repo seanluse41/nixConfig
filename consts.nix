@@ -25,5 +25,7 @@
     qwen35b = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF";
     # Gemma 4 31B @ Q4_K_M: 18.3 GB
     gemma31b = "unsloth/gemma-4-31B-it-GGUF:Q4_K_M";
+    # Gemma 4 26B-A4B with QAT and mtp enabled @ 14.2 GB
+    gemma26b = "unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL";
   };
 }
