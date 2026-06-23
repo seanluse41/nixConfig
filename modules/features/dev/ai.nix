@@ -20,7 +20,7 @@ in
           inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
             cmakeFlags =
               (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
-              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1200;gfx1201" ];
+              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1200;gfx1201;gfx1031" ];
             preConfigure = (old.preConfigure or "") + ''
               export CCACHE_DIR="/var/cache/ccache"
               export CCACHE_COMPRESS=1
@@ -64,6 +64,7 @@ in
           ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --spec-type draft-mtp --spec-draft-n-max 3 --webui-mcp-proxy --jinja -t 4 -tb 4 -np 1 --kv-unified --no-mmproj";
           Restart = "on-failure";
           Environment = "HSA_OVERRIDE_GFX_VERSION=12.0.1";
+          LimitMEMLOCK = "infinity";
         };
         Install = {
           WantedBy = [ "default.target" ];

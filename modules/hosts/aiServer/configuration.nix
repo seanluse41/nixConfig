@@ -94,8 +94,24 @@
 
       nix.settings.extra-sandbox-paths = [ "/var/cache/ccache" ];
       environment.variables = {
-        ROCM_TARGET_LIST = "gfx1200,gfx1201";
+        ROCM_TARGET_LIST = "gfx1200,gfx1201,gfx1031";
       };
+
+      # memlock stuff for gpus?
+      security.pam.loginLimits = [
+        {
+          domain = "*";
+          type = "soft";
+          item = "memlock";
+          value = "unlimited";
+        }
+        {
+          domain = "*";
+          type = "hard";
+          item = "memlock";
+          value = "unlimited";
+        }
+      ];
 
       nixpkgs.config.allowUnfree = true;
       system.stateVersion = "25.11";

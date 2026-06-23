@@ -201,11 +201,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782162192,
-        "narHash": "sha256-m1DekuTx/EfpxTOORNBYweoBoCYOVZCjAvLfJuFW5Ec=",
+        "lastModified": 1782192448,
+        "narHash": "sha256-IrHVUa3CtbnOVLW4bmnTQk7aVBZYoNJhyxWpBAXTG9Q=",
         "owner": "ggml-org",
         "repo": "llama.cpp",
-        "rev": "dec5ca5577d6042b4e870fadf4087c5b9b8d3a70",
+        "rev": "73618f27a801c0b8614ceaf3547d3c2a99baae14",
         "type": "github"
       },
       "original": {
