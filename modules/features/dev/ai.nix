@@ -53,7 +53,7 @@ in
       #asusrock z270 exteme 4
       #device 0: RX9070 XT (16gb)
       #device 1: RX9060 XT (16gb)
-      #device 2: RX6700 xt (12gb) <- currently disabled
+      #device 2: RX6700 xt (12gb)
 
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {
@@ -61,7 +61,7 @@ in
           After = [ "network.target" ];
         };
         Service = {
-          ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --spec-type draft-mtp --spec-draft-n-max 3 --webui-mcp-proxy --jinja -t 4 -tb 4 -np 1 --kv-unified --no-mmproj";
+          ExecStart = "ROCR_VISIBLE_DEVICES=0,1 ${llama}/bin/llama-server -hf ${consts.models.qwen35b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --spec-type draft-mtp --spec-draft-n-max 3 --webui-mcp-proxy --jinja -t 4 -tb 4 -np 1 --kv-unified --no-mmproj";
           Restart = "on-failure";
           Environment = "HSA_OVERRIDE_GFX_VERSION=12.0.1";
           LimitMEMLOCK = "infinity";

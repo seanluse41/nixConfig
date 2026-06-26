@@ -38,7 +38,7 @@ in
         enable = true;
         settings = {
           model = {
-            default = "${consts.models.gemma26b}";
+            default = "${consts.models.qwen35b}";
             provider = "custom";
             base_url = "http://192.168.50.49:8033/v1";
             api_key = "local";
@@ -47,7 +47,7 @@ in
             {
               name = "aiServer";
               base_url = "http://192.168.50.49:8033/v1";
-              model = "${consts.models.gemma26b}";
+              model = "${consts.models.qwen35b}";
             }
           ];
           gateway.platforms.line.enabled = true;
