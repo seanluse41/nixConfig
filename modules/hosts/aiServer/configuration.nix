@@ -7,7 +7,10 @@
         self.nixosModules.aiServerHardware
         self.nixosModules.tailscale
       ];
-
+      # disable BACO power management maybe
+      boot.kernelParams = [
+        "amdgpu.runpm=0"
+      ];
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
@@ -49,8 +52,19 @@
 
       # nix wiki says to symlink it for amdgpu rocm errors?
       systemd.tmpfiles.rules = [
-        "L+ /opt/rocm/hip - - - - ${pkgs.rocmPackages.clr}"
+        "L+ /opt/rocm - - - - ${
+          pkgs.symlinkJoin {
+            name = "rocm-combined";
+            paths = with pkgs.rocmPackages; [
+              rocblas
+              hipblas
+              clr
+            ];
+          }
+        }"
       ];
+
+      hardware.amdgpu.opencl.enable = true;
 
       nix.settings.max-jobs = "auto";
       nix.settings.cores = 0;
