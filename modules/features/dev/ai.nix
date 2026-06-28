@@ -61,8 +61,17 @@ in
           After = [ "network.target" ];
         };
         Service = {
+          ExecStartPre = pkgs.writeShellScript "wait-for-gpu" ''
+            echo "Waiting for ROCm devices..."
+            until ${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showid 2>/dev/null | grep -q "^0"; do
+              echo "No GPUs detected yet, retrying in 5s..."
+              sleep 5
+            done
+            echo "GPUs ready."
+          '';
           ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen35b} -c 65536 -ngl 99 --host 0.0.0.0 --port 8033 --spec-type draft-mtp --spec-draft-n-max 3 --webui-mcp-proxy --jinja -t 4 -tb 4 -np 1 --kv-unified --no-mmproj";
           Restart = "on-failure";
+          RestartSec = "5s";
           Environment = [
             "HSA_OVERRIDE_GFX_VERSION=12.0.1"
             "ROCR_VISIBLE_DEVICES=0,1"
