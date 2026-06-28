@@ -43,8 +43,14 @@
           rocmPackages.clr
           rocmPackages.clr.icd
           mesa
+          libdrm
         ];
       };
+
+      # nix wiki says to symlink it for amdgpu rocm errors?
+      systemd.tmpfiles.rules = [
+        "L+ /opt/rocm/hip - - - - ${pkgs.rocmPackages.clr}"
+      ];
 
       nix.settings.max-jobs = "auto";
       nix.settings.cores = 0;
