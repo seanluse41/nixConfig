@@ -22,7 +22,7 @@
     # Qwen3.6 27B dense @ Q6: 26 GB
     qwen27b = "unsloth/Qwen3.6-27B-MTP-GGUF:Q6_K";
     # Qwen3.6 35B-A3B @ UD-Q6_K: 30.0 GB
-    qwen35b = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-Q6_K";
+    qwen35b = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-Q5_K_XL";
     # Gemma 4 31B @ Q4_K_M: 18.3 GB
     gemma31b = "unsloth/gemma-4-31B-it-GGUF:Q4_K_M";
     # Gemma 4 26B-A4B with QAT and mtp enabled @ 14.2 GB
