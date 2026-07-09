@@ -39,6 +39,7 @@
         rustup
         # node
         nodejs
+        vitejs
         pnpm
         npm-check-updates
         clang
