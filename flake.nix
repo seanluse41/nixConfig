@@ -25,10 +25,6 @@
       url = "path:./shells/tauri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    llm-proxy-shell = {
-      url = "path:./shells/llm-proxy";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
       inputs.nixpkgs.follows = "nixpkgs";

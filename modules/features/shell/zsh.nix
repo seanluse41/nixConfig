@@ -7,6 +7,7 @@
         enable = true;
         shellAliases = {
           rebuild = "home-manager switch --flake ~/nixConfig#seanluse ";
+          llm-proxy = "nix develop ~/nixConfig#llm-proxy";
         };
         initContent = ''
           fastfetch
