@@ -178,6 +178,7 @@
             home.file."games".source = config.lib.file.mkOutOfStoreSymlink "/mnt/data/games";
 
             home.pointerCursor = {
+              enable = true;
               gtk.enable = true;
               x11.enable = true;
               name = "Breeze_Light";

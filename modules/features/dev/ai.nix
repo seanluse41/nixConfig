@@ -18,10 +18,15 @@ in
           inputs.llama-cpp.packages.${pkgs.system}.default
         else
           inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+              pkgs.llvmPackages.lld
+              pkgs.llvmPackages.bintools
+            ];
             cmakeFlags =
               (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
               ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1200;gfx1201;gfx1031" ];
             preConfigure = (old.preConfigure or "") + ''
+              export PATH="${pkgs.llvmPackages.lld}/bin:${pkgs.llvmPackages.bintools}/bin:$PATH"
               export CCACHE_DIR="/var/cache/ccache"
               export CCACHE_COMPRESS=1
               export CCACHE_UMASK=007
