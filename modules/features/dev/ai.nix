@@ -15,7 +15,7 @@ in
     let
       llama =
         if hostName == "macbook" then
-          pkgs.llama-cpp
+          inputs.llama-cpp.packages.${pkgs.system}.default
         else
           inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
             cmakeFlags =
