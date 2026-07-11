@@ -18,7 +18,7 @@ in
         else if hostName == "desktop" then
           pkgs.llama-cpp-vulkan
         else
-          pkgs.llama-cpp-rocm;
+          pkgs.pkgsRocm.llama-cpp;
     in
     {
       home.packages = with pkgs; [
