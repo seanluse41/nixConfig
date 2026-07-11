@@ -8,27 +8,13 @@
         inputs.sops-nix.nixosModules.sops
       ];
 
-      nix.settings.trusted-public-keys = [
-        "desktop:BhUdL4xwaKkc77fe+B7iQulMzkd5VWXSyQKZ2rnGp04="
-      ];
-
-      sops.secrets.GITHUB_TOKEN = {
-        owner = "sean";
-      };
-
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
       networking = {
         hostName = "home-server";
         networkmanager.enable = true;
-        firewall.allowedTCPPorts = [
-          22
-          80
-          443
-          8080
-          8033
-        ];
+        firewall.allowedTCPPorts = [ 22 80 443 8080 8033 ];
       };
 
       time.timeZone = "Asia/Tokyo";
@@ -39,11 +25,7 @@
       users.users.sean = {
         isNormalUser = true;
         linger = true;
-        extraGroups = [
-          "wheel"
-          "docker"
-          "networkmanager"
-        ];
+        extraGroups = [ "wheel" "docker" "networkmanager" ];
       };
 
       hardware.graphics = {
@@ -54,22 +36,6 @@
         ];
       };
 
-      nix.gc = {
-        automatic = true;
-        dates = "daily";
-        options = "--delete-older-than 3d";
-      };
-      nix.settings.auto-optimise-store = true;
-      nix.settings.experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-
-      services.journald.extraConfig = ''
-        SystemMaxUse=100M
-        MaxRetentionSec=3day
-      '';
-
       virtualisation.docker.enable = true;
 
       services.openssh = {
@@ -77,22 +43,43 @@
         settings.PasswordAuthentication = true;
       };
 
-      nixpkgs.config.allowUnfree = true;
+      services.journald.extraConfig = ''
+        SystemMaxUse=100M
+        MaxRetentionSec=3day
+      '';
+
+      sops.secrets.GITHUB_TOKEN = {
+        owner = "sean";
+      };
+
+      nix.settings = {
+        experimental-features = [ "nix-command" "flakes" ];
+        auto-optimise-store = true;
+        extra-sandbox-paths = [ "/var/cache/ccache" ];
+        trusted-users = [ "sean" ];
+        trusted-public-keys = [
+          "desktop:BhUdL4xwaKkc77fe+B7iQulMzkd5VWXSyQKZ2rnGp04="
+        ];
+      };
+
+      nix.gc = {
+        automatic = true;
+        dates = "daily";
+        options = "--delete-older-than 3d";
+      };
 
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
         backupFileExtension = "backup";
-        users.sean =
-          { ... }:
-          {
-            home.username = "sean";
-            home.homeDirectory = "/home/sean";
-            home.stateVersion = "24.11";
-          };
+        users.sean = { ... }: {
+          home.username = "sean";
+          home.homeDirectory = "/home/sean";
+          home.stateVersion = "24.11";
+        };
       };
-      nix.settings.extra-sandbox-paths = [ "/var/cache/ccache" ];
 
+      nixpkgs.config.allowUnfree = true;
       system.stateVersion = "24.11";
     };
 }

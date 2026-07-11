@@ -1,5 +1,5 @@
 # ai.nix
-{ inputs, ... }:
+{ ... }:
 let
   consts = import ../../../consts.nix;
 in
@@ -9,56 +9,24 @@ in
       pkgs,
       lib,
       hostName,
-      config,
       ...
     }:
     let
       llama =
         if hostName == "macbook" then
-          inputs.llama-cpp.packages.${pkgs.system}.default
+          pkgs.llama-cpp
+        else if hostName == "desktop" then
+          pkgs.llama-cpp-vulkan
         else
-          inputs.llama-cpp.packages.${pkgs.system}.rocm.overrideAttrs (old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-              pkgs.llvmPackages.lld
-              pkgs.llvmPackages.bintools
-            ];
-            cmakeFlags =
-              (builtins.filter (f: builtins.match ".*CMAKE_HIP_ARCHITECTURES.*" f == null) old.cmakeFlags)
-              ++ [ "-DCMAKE_HIP_ARCHITECTURES:STRING=gfx1200;gfx1201;gfx1031" ];
-            preConfigure = (old.preConfigure or "") + ''
-              export PATH="${pkgs.llvmPackages.lld}/bin:${pkgs.llvmPackages.bintools}/bin:$PATH"
-              export CCACHE_DIR="/var/cache/ccache"
-              export CCACHE_COMPRESS=1
-              export CCACHE_UMASK=007
-            '';
-            CMAKE_C_COMPILER_LAUNCHER = "${pkgs.ccache}/bin/ccache";
-            CMAKE_CXX_COMPILER_LAUNCHER = "${pkgs.ccache}/bin/ccache";
-          });
-
-      llama-server-vulkan = lib.mkIf (hostName == "aiServer") (
-        pkgs.writeShellScriptBin "llama-server-vulkan" ''
-          exec ${pkgs.llama-cpp-vulkan}/bin/llama-server "$@"
-        ''
-      );
+          pkgs.llama-cpp-rocm;
     in
     {
-      home.packages =
-        with pkgs;
-        [
-          llama
-          llmfit
-          stable-diffusion-cpp
-          python3Packages.huggingface-hub
-        ]
-        ++ lib.optionals (hostName == "aiServer") [ llama-server-vulkan ];
-
-      #ai server:
-      #intel skylake i5
-      #8gb ddr4 ram
-      #asusrock z270 exteme 4
-      #device 0: RX9070 XT (16gb)
-      #device 1: RX9060 XT (16gb)
-      #device 2: RX6700 xt (12gb)
+      home.packages = with pkgs; [
+        llama
+        llmfit
+        stable-diffusion-cpp
+        python3Packages.huggingface-hub
+      ];
 
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {

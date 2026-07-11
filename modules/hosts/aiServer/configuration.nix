@@ -7,83 +7,17 @@
         self.nixosModules.aiServerHardware
         self.nixosModules.tailscale
       ];
-      # disable BACO power management maybe
-      boot.kernelParams = [
-        "amdgpu.runpm=0"
-      ];
+
+      boot.kernelParams = [ "amdgpu.runpm=0" ];
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
       networking.hostName = "ai-server";
       networking.networkmanager.enable = true;
-      networking.firewall.allowedTCPPorts = [
-        22
-        80
-        443
-        8080
-        8033
-      ];
+      networking.firewall.allowedTCPPorts = [ 22 80 443 8080 8033 ];
 
       time.timeZone = "Asia/Tokyo";
       i18n.defaultLocale = "en_US.UTF-8";
-
-      home-manager = {
-        useGlobalPkgs = true;
-        useUserPackages = true;
-        backupFileExtension = "backup";
-        users.sean =
-          { ... }:
-          {
-            home.username = "sean";
-            home.homeDirectory = "/home/sean";
-            home.stateVersion = "25.11";
-          };
-      };
-
-      hardware.graphics = {
-        enable = true;
-        extraPackages = with pkgs; [
-          rocmPackages.clr
-          rocmPackages.clr.icd
-          mesa
-          libdrm
-        ];
-      };
-
-      # nix wiki says to symlink it for amdgpu rocm errors?
-      systemd.tmpfiles.rules = [
-        "L+ /opt/rocm - - - - ${
-          pkgs.symlinkJoin {
-            name = "rocm-combined";
-            paths = with pkgs.rocmPackages; [
-              rocblas
-              hipblas
-              clr
-            ];
-          }
-        }"
-      ];
-
-      hardware.amdgpu.opencl.enable = true;
-
-      nix.settings.max-jobs = "auto";
-      nix.settings.cores = 0;
-
-      users.users.sean = {
-        isNormalUser = true;
-        linger = true;
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-          "video"
-          "render"
-        ];
-      };
-
-      services.openssh = {
-        enable = true;
-        settings.PasswordAuthentication = true;
-      };
       i18n.extraLocaleSettings = {
         LC_ADDRESS = "ja_JP.UTF-8";
         LC_IDENTIFICATION = "ja_JP.UTF-8";
@@ -101,37 +35,72 @@
         variant = "";
       };
 
-      nix.settings.experimental-features = [
-        "nix-command"
-        "flakes"
+      users.users.sean = {
+        isNormalUser = true;
+        linger = true;
+        extraGroups = [ "wheel" "networkmanager" "video" "render" ];
+      };
+
+      services.openssh = {
+        enable = true;
+        settings.PasswordAuthentication = true;
+      };
+
+      hardware.graphics = {
+        enable = true;
+        extraPackages = with pkgs; [
+          rocmPackages.clr
+          rocmPackages.clr.icd
+          mesa
+          libdrm
+        ];
+      };
+
+      hardware.amdgpu.opencl.enable = true;
+
+      systemd.tmpfiles.rules = [
+        "L+ /opt/rocm - - - - ${
+          pkgs.symlinkJoin {
+            name = "rocm-combined";
+            paths = with pkgs.rocmPackages; [ rocblas hipblas clr ];
+          }
+        }"
       ];
-      nix.settings.auto-optimise-store = true;
+
+      environment.variables = {
+        ROCM_TARGET_LIST = "gfx1200,gfx1201,gfx1031";
+      };
+
+      security.pam.loginLimits = [
+        { domain = "*"; type = "soft"; item = "memlock"; value = "unlimited"; }
+        { domain = "*"; type = "hard"; item = "memlock"; value = "unlimited"; }
+      ];
+
+      nix.settings = {
+        experimental-features = [ "nix-command" "flakes" ];
+        max-jobs = "auto";
+        cores = 0;
+        auto-optimise-store = true;
+        extra-sandbox-paths = [ "/var/cache/ccache" ];
+        trusted-users = [ "sean" ];
+      };
+
       nix.gc = {
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 7d";
       };
 
-      nix.settings.extra-sandbox-paths = [ "/var/cache/ccache" ];
-      environment.variables = {
-        ROCM_TARGET_LIST = "gfx1200,gfx1201,gfx1031";
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        backupFileExtension = "backup";
+        users.sean = { ... }: {
+          home.username = "sean";
+          home.homeDirectory = "/home/sean";
+          home.stateVersion = "25.11";
+        };
       };
-
-      # memlock stuff for gpus?
-      security.pam.loginLimits = [
-        {
-          domain = "*";
-          type = "soft";
-          item = "memlock";
-          value = "unlimited";
-        }
-        {
-          domain = "*";
-          type = "hard";
-          item = "memlock";
-          value = "unlimited";
-        }
-      ];
 
       nixpkgs.config.allowUnfree = true;
       system.stateVersion = "25.11";
