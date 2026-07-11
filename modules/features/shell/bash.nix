@@ -18,7 +18,7 @@ in
           tauriShell = "nix develop ~/nixConfig#tauri";
           tree = "erd -H .";
           gemma = "llama-server -hf ${consts.models.gemma31b} -c 16384 -fa on -ngl 99 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja --min-p 0.0 -t 8 -tb 8 -ctk q8_0 -ctv q8_0 --kv-unified --no-mmproj";
-          qwen = "llama-server -hf ${consts.models.qwen27b} -c 16384 -fa on -ngl 99 --spec-type draft-mtp --spec-draft-n-max 3 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja --min-p 0.0 -t 8 -tb 8 -ctk q8_0 -ctv q8_0 --kv-unified --no-mmproj";
+          qwen = "llama-server -hf ${consts.models.qwen35b} -c 16384 -fa on -ngl 99 --spec-type draft-mtp --spec-draft-n-max 3 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja --min-p 0.0 -t 8 -tb 8 -ctk q8_0 -ctv q8_0 --kv-unified --no-mmproj";
           aiServer = "ssh ${consts.user}@${consts.network.aiServer}";
         };
         sessionVariables = {
