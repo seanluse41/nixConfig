@@ -41,6 +41,7 @@
         nodejs
         #vitejs
         pnpm
+        yarn
         npm-check-updates
         clang
         stripe-cli

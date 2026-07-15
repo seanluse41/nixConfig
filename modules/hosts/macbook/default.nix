@@ -20,7 +20,7 @@
       kintone
       vscode
       hugo
-      devPackages
+      #devPackages
       utils
       aws
       ai
@@ -34,7 +34,7 @@
 
           sops = {
             defaultSopsFile = "${self}/secrets/secrets.yaml";
-            age.keyFile = "/Users/sean/.config/sops/age/keys.txt";
+            age.keyFile = "/Users/seanluse/.config/sops/age/keys.txt";
             secrets.GITHUB_TOKEN = { };
             templates."nix-access-tokens.conf".content = ''
               access-tokens = github.com=${config.sops.placeholder.GITHUB_TOKEN}
