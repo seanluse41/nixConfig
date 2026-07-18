@@ -20,7 +20,7 @@
       kintone
       vscode
       hugo
-      #devPackages
+      devPackages
       utils
       aws
       ai

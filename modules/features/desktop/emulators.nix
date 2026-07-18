@@ -7,7 +7,7 @@
         dolphin-emu
         melonds
         pcsx2
-        #rpcs3
+        rpcs3
         ryubing
         fceux
         _2ship2harkinian
