@@ -19,7 +19,10 @@ in
           pkgs.llama-cpp-vulkan
         else
           pkgs.pkgsRocm.llama-cpp.override {
-            rocmGpuTargets = "gfx1200;gfx1201";
+            rocmGpuTargets = [
+              "gfx1200"
+              "gfx1201"
+            ];
           };
     in
     {
