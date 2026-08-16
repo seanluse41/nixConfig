@@ -39,7 +39,7 @@
         rustup
         # node
         nodejs
-        #vitejs
+        vitejs
         pnpm
         yarn
         npm-check-updates
