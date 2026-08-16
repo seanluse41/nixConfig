@@ -67,10 +67,6 @@
         }"
       ];
 
-      environment.variables = {
-        ROCM_TARGET_LIST = "gfx1200,gfx1201,gfx1031";
-      };
-
       security.pam.loginLimits = [
         { domain = "*"; type = "soft"; item = "memlock"; value = "unlimited"; }
         { domain = "*"; type = "hard"; item = "memlock"; value = "unlimited"; }

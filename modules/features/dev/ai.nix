@@ -18,7 +18,9 @@ in
         else if hostName == "desktop" then
           pkgs.llama-cpp-vulkan
         else
-          pkgs.pkgsRocm.llama-cpp;
+          pkgs.pkgsRocm.llama-cpp.override {
+            rocmGpuTargets = "gfx1200;gfx1201";
+          };
     in
     {
       home.packages = with pkgs; [
@@ -40,7 +42,6 @@ in
           StartLimitBurst = 3;
           StartLimitIntervalSec = "300s";
           Environment = [
-            "HSA_OVERRIDE_GFX_VERSION=12.0.1"
             "ROCR_VISIBLE_DEVICES=0,1"
           ];
           LimitMEMLOCK = "infinity";
