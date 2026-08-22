@@ -13,6 +13,7 @@
           ExecStart = "${pkgs.uv}/bin/uv --directory ${config.home.homeDirectory}/code/ai/blender_mcp/mcp run blender-mcp --transport http --port 9191";
           Restart = "on-failure";
           WorkingDirectory = "${config.home.homeDirectory}/code/ai/blender_mcp";
+          Environment = [ "UV_PYTHON=${pkgs.python3}/bin/python3" ];
         };
         Install = {
           WantedBy = [ "default.target" ];

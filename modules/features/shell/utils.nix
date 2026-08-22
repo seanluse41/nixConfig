@@ -46,6 +46,7 @@
         clang
         stripe-cli
         cargo-tauri
+        python3
         uv
         git
         gh
