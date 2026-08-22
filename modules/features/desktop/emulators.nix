@@ -9,7 +9,7 @@
         pcsx2
         rpcs3
         ryubing
-        fceux
+        #fceux
         _2ship2harkinian
         shipwright
         nxengine-evo

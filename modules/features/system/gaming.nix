@@ -35,7 +35,7 @@
         wineWow64Packages.staging
         fuse-overlayfs
         bubblewrap
-        dwarfs
+        #dwarfs
         (heroic.override { extraPkgs = _pkgs: [ gamescope ]; })
       ];
     };

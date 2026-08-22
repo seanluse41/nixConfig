@@ -9,6 +9,7 @@
     modules = with self.nixosModules; [
       desktopConfig
       ccache
+      blender-mcp
       inputs.home-manager.nixosModules.default
       {
         home-manager.extraSpecialArgs = {
