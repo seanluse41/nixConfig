@@ -4,7 +4,7 @@
   flake.homeModules.blenderMcp =
     { pkgs, config, ... }:
     {
-      systemd.user.services.blender-mcp = {
+      systemd.user.services.blenderMcp = {
         Unit = {
           Description = "Blender MCP Server";
           After = [ "network.target" ];
