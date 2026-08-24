@@ -58,6 +58,7 @@ in
         };
         environmentFiles = [ config.sops.templates."hermes-env".path ];
         addToSystemPackages = true;
+        extraDependencyGroups = [ "messaging" ];
       };
 
       users.users.sean.extraGroups = [ "hermes" ];
