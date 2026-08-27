@@ -43,7 +43,11 @@
         pnpm
         yarn
         npm-check-updates
+        # build stuff
         clang
+        ninja
+        cmake
+        #
         stripe-cli
         cargo-tauri
         python3

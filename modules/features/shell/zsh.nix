@@ -16,6 +16,7 @@
           export ANDROID_HOME="/Users/sean/Library/Android/sdk"
           export NDK_HOME="$ANDROID_HOME/ndk/29.0.13113456"
           export PATH="$HOME/.npm-global/bin:$PATH"
+          export SDKROOT="$(xcrun --show-sdk-path)"
         '';
         sessionVariables = {
           EDITOR = "nano";
