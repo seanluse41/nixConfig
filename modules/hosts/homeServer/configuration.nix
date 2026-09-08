@@ -14,7 +14,13 @@
       networking = {
         hostName = "home-server";
         networkmanager.enable = true;
-        firewall.allowedTCPPorts = [ 22 80 443 8080 8033 ];
+        firewall.allowedTCPPorts = [
+          22
+          80
+          443
+          8080
+          8033
+        ];
       };
 
       time.timeZone = "Asia/Tokyo";
@@ -25,7 +31,11 @@
       users.users.sean = {
         isNormalUser = true;
         linger = true;
-        extraGroups = [ "wheel" "docker" "networkmanager" ];
+        extraGroups = [
+          "wheel"
+          "docker"
+          "networkmanager"
+        ];
       };
 
       hardware.graphics = {
@@ -43,17 +53,20 @@
         settings.PasswordAuthentication = true;
       };
 
-      services.journald.extraConfig = ''
-        SystemMaxUse=100M
-        MaxRetentionSec=3day
-      '';
+      services.journald.settings.Journal = {
+        SystemMaxUse = "100M";
+        MaxRetentionSec = "3day";
+      };
 
       sops.secrets.GITHUB_TOKEN = {
         owner = "sean";
       };
 
       nix.settings = {
-        experimental-features = [ "nix-command" "flakes" ];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
         auto-optimise-store = true;
         extra-sandbox-paths = [ "/var/cache/ccache" ];
         trusted-users = [ "sean" ];
