@@ -1,14 +1,14 @@
 { ... }:
 {
   flake.homeModules.aws =
-    { pkgs, lib, ... }:
+    { pkgs, lib, hostName, ... }:
     {
       home.packages = with pkgs; [
         awscli2
         aws-sam-cli
       ];
 
-      home.activation.awsCredentials = lib.mkIf (!pkgs.stdenv.isDarwin) (
+      home.activation.awsCredentials = lib.mkIf (hostName != "macbook") (
         lib.hm.dag.entryAfter [ "writeBoundary" ] ''
           mkdir -p ~/.aws
           cat > ~/.aws/credentials << EOF

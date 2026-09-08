@@ -1,11 +1,11 @@
 { ... }:
 {
   flake.homeModules.kintone =
-    { pkgs, ... }:
+    { pkgs, hostName, ... }:
     let
       version = "1.19.1";
       platform =
-        if pkgs.stdenv.isDarwin then
+        if hostName == "macbook" then
           {
             url = "https://github.com/kintone/cli-kintone/releases/download/v${version}/cli-kintone_v${version}_macos.zip";
             sha256 = "sha256-vLAU4c79kWq4WtF9PaF/kwj8kMxoaC4KeotD0rodBIc=";
@@ -32,7 +32,7 @@
         '';
       };
       cli-kintone =
-        if pkgs.stdenv.isDarwin then
+        if hostName == "macbook" then
           unwrapped
         else
           pkgs.buildFHSEnv {

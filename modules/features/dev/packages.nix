@@ -1,14 +1,14 @@
 { ... }:
 {
   flake.homeModules.devPackages =
-    { pkgs, lib, ... }:
+    { pkgs, lib, hostName, ... }:
     {
       home.packages =
         with pkgs;
         [
           godot
         ]
-        ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+        ++ lib.optionals (hostName != "macbook") [
           android-studio
           blender
         ];
