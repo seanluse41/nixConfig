@@ -1,4 +1,7 @@
 { ... }:
+let
+  consts = import ../../../../consts.nix;
+in
 {
   flake.nixosModules.jellyfin =
     { ... }:
@@ -12,6 +15,6 @@
         "video"
         "render"
       ];
-      networking.firewall.allowedTCPPorts = [ 8096 ];
+      networking.firewall.allowedTCPPorts = [ consts.ports.jellyfin ];
     };
 }

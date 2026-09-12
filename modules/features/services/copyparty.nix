@@ -1,4 +1,7 @@
 { ... }:
+let
+  consts = import ../../../../consts.nix;
+in
 {
   flake.nixosModules.copyparty =
     { config, pkgs, ... }:
@@ -6,7 +9,7 @@
       configFile = pkgs.writeText "copyparty.conf" ''
         [global]
         i: 0.0.0.0
-        p: 3923
+        p: ${toString consts.ports.copyparty}
 
         [accounts]
         sean: {{password-sean}}
@@ -40,6 +43,6 @@
         };
       };
 
-      networking.firewall.allowedTCPPorts = [ 3923 ];
+      networking.firewall.allowedTCPPorts = [ consts.ports.copyparty ];
     };
 }

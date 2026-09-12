@@ -1,4 +1,7 @@
 { ... }:
+let
+  consts = import ../../../../consts.nix;
+in
 {
   flake.nixosModules.uptimeKuma =
     { pkgs, ... }:
@@ -6,13 +9,12 @@
       services.uptime-kuma = {
         enable = true;
         settings = {
-          PORT = "3001";
+          PORT = toString consts.ports.uptimeKuma;
           UPTIME_KUMA_HOST = "0.0.0.0";
         };
       };
 
-      networking.firewall.allowedTCPPorts = [ 3001 ];
-
+      networking.firewall.allowedTCPPorts = [ consts.ports.uptimeKuma ];
       systemd.services.borg-status-check = {
         description = "Check borg backup status and log";
         serviceConfig = {

@@ -1,4 +1,7 @@
 { ... }:
+let
+  consts = import ../../../../consts.nix;
+in
 {
   flake.nixosModules.immich =
     { pkgs, ... }:
@@ -6,7 +9,7 @@
       services.immich = {
         enable = true;
         host = "0.0.0.0";
-        port = 2283;
+        port = consts.ports.immich;
         mediaLocation = "/var/lib/immich-pictures";
         accelerationDevices = null;
         database.enable = true;
@@ -22,6 +25,6 @@
         "render"
       ];
       environment.systemPackages = with pkgs; [ immich-cli ];
-      networking.firewall.allowedTCPPorts = [ 2283 ];
+      networking.firewall.allowedTCPPorts = [ consts.ports.immich ];
     };
 }

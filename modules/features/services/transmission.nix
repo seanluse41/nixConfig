@@ -1,4 +1,7 @@
 { ... }:
+let
+  consts = import ../../../../consts.nix;
+in
 {
   flake.nixosModules.transmission =
     { pkgs, ... }:
@@ -14,6 +17,6 @@
           rpc-whitelist-enabled = false;
         };
       };
-      networking.firewall.allowedTCPPorts = [ 9091 ];
+      networking.firewall.allowedTCPPorts = [ consts.ports.transmission ];
     };
 }

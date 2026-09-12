@@ -16,8 +16,8 @@
     copyparty = 3923;
     jellyfin = 8096;
     transmission = 9091;
-    blender-mcp = 9191;
-    uptime-kuma = 3001;
+    blenderMcp = 9191;
+    uptimeKuma = 3001;
   };
 
   user = "sean";
