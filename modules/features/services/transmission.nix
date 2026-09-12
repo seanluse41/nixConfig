@@ -13,6 +13,7 @@
           rpc-bind-address = "0.0.0.0";
           rpc-whitelist-enabled = false;
         };
+        networking.firewall.allowedTCPPorts = [ 9091 ];
       };
     };
 }

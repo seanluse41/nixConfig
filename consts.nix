@@ -12,7 +12,10 @@
     ssh = 22;
     http = 80;
     https = 443;
-    immich = 8080;
+    immich = 2283;
+    copyparty = 3923;
+    jellyfin = 8096;
+    transmission = 9091;
   };
 
   user = "sean";
