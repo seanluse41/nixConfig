@@ -18,13 +18,7 @@
       '';
     in
     {
-      sops.secrets.copyparty-password.owner = "copyparty";
-
-      users.users.copyparty = {
-        isSystemUser = true;
-        group = "copyparty";
-      };
-      users.groups.copyparty = {};
+      sops.secrets.copyparty-password.owner = "sean";
 
       systemd.services.copyparty = {
         description = "copyparty file server";
@@ -40,8 +34,8 @@
           ExecStart = "${pkgs.copyparty}/bin/copyparty -c /run/copyparty/copyparty.conf";
           RuntimeDirectory = "copyparty";
           RuntimeDirectoryMode = "0700";
-          User = "copyparty";
-          Group = "copyparty";
+          User = "sean";
+          Group = "users";
           Restart = "on-failure";
         };
       };
