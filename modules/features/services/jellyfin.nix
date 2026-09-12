@@ -1,6 +1,6 @@
 { ... }:
 let
-  consts = import ../../../../consts.nix;
+  consts = import ../../../consts.nix;
 in
 {
   flake.nixosModules.jellyfin =
