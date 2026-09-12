@@ -6,6 +6,7 @@
       homeServerConfig
       ccache
       tailscale
+      copyparty
       immich
       borgBackup
       uptimeKuma
