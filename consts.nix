@@ -17,6 +17,7 @@
     jellyfin = 8096;
     transmission = 9091;
     blender-mcp = 9191;
+    uptime-kuma = 3001;
   };
 
   user = "sean";
