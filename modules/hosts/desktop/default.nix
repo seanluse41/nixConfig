@@ -32,6 +32,7 @@
           kintone
           ai
           blenderMcp
+          mangohud
         ];
       }
     ];

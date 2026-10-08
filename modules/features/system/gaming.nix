@@ -27,6 +27,7 @@
       boot.kernelParams = [
         "usbhid.quirks=0x057e:0x2009:0x80000000"
         "pcie_aspm=off"
+        "clearcpuid=umip"
       ];
 
       environment.systemPackages = with pkgs; [
@@ -35,7 +36,7 @@
         wineWow64Packages.staging
         fuse-overlayfs
         bubblewrap
-        #dwarfs
+        dwarfs
         (heroic.override { extraPkgs = _pkgs: [ gamescope ]; })
       ];
     };
