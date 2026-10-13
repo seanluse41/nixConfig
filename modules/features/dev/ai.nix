@@ -24,6 +24,16 @@ in
               "gfx1201"
             ];
           };
+
+      waitForGpus = pkgs.writeShellScript "wait-for-gpus" ''
+        for i in $(seq 60); do
+          n=$(${pkgs.rocmPackages.rocminfo}/bin/rocminfo 2>/dev/null | ${pkgs.gnugrep}/bin/grep -c '^ *Name: *gfx')
+          if [ "$n" -ge 2 ]; then exit 0; fi
+          sleep 2
+        done
+        echo "fewer than 2 ROCm GPUs after 120s" >&2
+        exit 1
+      '';
     in
     {
       home.packages = with pkgs; [
@@ -35,15 +45,17 @@ in
 
       systemd.user.services.gemma = lib.mkIf (hostName == "aiServer") {
         Unit = {
-          Description = "Qwen llama.cpp server";
+          Description = "llama.cpp server";
           After = [ "network.target" ];
           StartLimitBurst = 3;
-          StartLimitIntervalSec = "300s";
+          StartLimitIntervalSec = "0";
         };
         Service = {
+          ExecStartPre = "${waitForGpus}";
           ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 131072 -ctk q8_0 -ctv q8_0 -ngl 99 --cache-ram 0 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --jinja -t 4 -tb 4 -np 1 --kv-unified --no-mmproj --spec-type draft-mtp --spec-draft-n-max 3 --chat-template-kwargs '{\"reasoning_effort\":\"low\"}'";
           Restart = "on-failure";
           RestartSec = "30s";
+          TimeoutStartSec = "300";
           Environment = [
             "ROCR_VISIBLE_DEVICES=0,1"
             "GGML_CUDA_DISABLE_GRAPHS=1"
