@@ -14,6 +14,7 @@
         self.nixosModules.wiimote
         self.nixosModules.desktopServices
         self.nixosModules.tailscale
+        self.nixosModules.amdgpu
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.default
       ];
