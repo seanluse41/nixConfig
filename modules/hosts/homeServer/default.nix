@@ -4,7 +4,7 @@
     system = "x86_64-linux";
     modules = with self.nixosModules; [
       homeServerConfig
-      ccache
+      #ccache
       tailscale
       copyparty
       immich
