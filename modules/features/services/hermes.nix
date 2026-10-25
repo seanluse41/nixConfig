@@ -17,7 +17,7 @@ in
       sops.secrets."LINE_ALLOWED_USERS" = { };
 
       sops.templates."hermes-env" = {
-        owner = "hermes";
+        owner = "sean";
         content = ''
           SLACK_BOT_TOKEN=${config.sops.placeholder."SLACK_BOT_TOKEN"}
           SLACK_APP_TOKEN=${config.sops.placeholder."SLACK_APP_TOKEN"}
@@ -31,11 +31,14 @@ in
       };
 
       systemd.tmpfiles.rules = [
-        "Z /var/lib/hermes - hermes hermes - -"
+        "Z /var/lib/hermes - sean users - -"
       ];
 
       services.hermes-agent = {
         enable = true;
+        user = "sean";
+        group = "users";
+        createUser = false;
         settings = {
           model = {
             default = "${consts.models.qwen27b}";
@@ -60,8 +63,6 @@ in
         addToSystemPackages = true;
         extraDependencyGroups = [ "messaging" ];
       };
-
-      users.users.sean.extraGroups = [ "hermes" ];
 
       networking.firewall.allowedTCPPorts = [ 8646 ];
     };
