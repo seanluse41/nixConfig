@@ -3,12 +3,12 @@
   flake.homeModules.kintone =
     { pkgs, hostName, ... }:
     let
-      version = "1.19.1";
+      version = "1.22.1";
       platform =
         if hostName == "macbook" then
           {
             url = "https://github.com/kintone/cli-kintone/releases/download/v${version}/cli-kintone_v${version}_macos.zip";
-            sha256 = "sha256-vLAU4c79kWq4WtF9PaF/kwj8kMxoaC4KeotD0rodBIc=";
+            sha256 = "sha256-TGdgIjWeYhM61Dh8+2WkpTNyoc68L6/XgEMS7fNYqWs=";
             binary = "cli-kintone-macos/cli-kintone";
           }
         else
