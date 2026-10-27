@@ -14,7 +14,7 @@
         else
           {
             url = "https://github.com/kintone/cli-kintone/releases/download/v${version}/cli-kintone_v${version}_linux.zip";
-            sha256 = "sha256-fijV8FVH9O4UhkrW6VnpCR0B31mNFubzzcotEb60S8M=";
+            sha256 = "sha256-Imti38OafNrI6yAhLiMhFE0HDxCQ8+z+EMW1fL6Fp3o=";
             binary = "cli-kintone-linux/cli-kintone";
           };
       unwrapped = pkgs.stdenvNoCC.mkDerivation {
