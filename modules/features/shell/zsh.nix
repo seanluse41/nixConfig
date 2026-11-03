@@ -21,6 +21,7 @@
         sessionVariables = {
           EDITOR = "nano";
           SOPS_AGE_KEY_FILE = "${config.xdg.configHome}/sops/age/keys.txt";
+          NODE_EXTRA_CA_CERTS = "/etc/ssl/cert.pem";
         };
       };
     };
