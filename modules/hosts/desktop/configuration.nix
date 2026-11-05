@@ -155,6 +155,10 @@
       services.displayManager.cosmic-greeter.enable = true;
       services.system76-scheduler.enable = true;
       services.flatpak.enable = true;
+      programs.appimage = {
+        enable = true;
+        binfmt = true;
+      };
 
       system.stateVersion = "25.11";
 
