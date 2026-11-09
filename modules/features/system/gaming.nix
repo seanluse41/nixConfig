@@ -7,8 +7,12 @@
         enable = true;
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
+        extraPackages = with pkgs; [
+          libxscrnsaver
+          libxtst
+          libdecor
+        ];
       };
-
       programs.gamemode.enable = true;
       programs.gamescope.enable = true;
 
@@ -36,7 +40,7 @@
         wineWow64Packages.staging
         fuse-overlayfs
         bubblewrap
-        dwarfs
+        #dwarfs
         (heroic.override { extraPkgs = _pkgs: [ gamescope ]; })
       ];
     };

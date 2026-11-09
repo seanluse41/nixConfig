@@ -14,7 +14,7 @@
         shipwright
         nxengine-evo
         easyrpg-player
-        dusklight
+        #dusklight
       ];
 
       services.flatpak.packages = [
