@@ -4,7 +4,12 @@ let
 in
 {
   flake.nixosModules.immich =
-    { config, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       services.immich = {
         enable = true;
@@ -31,6 +36,12 @@ in
             ApiKeyFile = config.sops.secrets.immichframe-api-key.path;
           }
         ];
+      };
+
+      systemd.services.immichframe = {
+        after = [ "immich-server.service" ];
+        wants = [ "immich-server.service" ];
+        serviceConfig.ExecStart = lib.mkForce "${config.services.immichframe.package}/bin/ImmichFrame.WebApi --urls=http://0.0.0.0:${toString consts.ports.immichFrame}";
       };
 
       users.users.immich.extraGroups = [
