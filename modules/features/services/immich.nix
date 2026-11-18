@@ -30,12 +30,28 @@ in
       services.immichframe = {
         enable = true;
         port = consts.ports.immichFrame;
-        settings.Accounts = [
-          {
-            ImmichServerUrl = "http://localhost:${toString consts.ports.immich}";
-            ApiKeyFile = config.sops.secrets.immichframe-api-key.path;
-          }
-        ];
+        settings = {
+          General = {
+            Interval = 30;
+            Layout = "single";
+            ShowClock = true;
+            ShowProgressBar = false;
+            ShowPhotoDate = false;
+            ShowImageDesc = false;
+            ShowPeopleDesc = false;
+            ShowTagsDesc = false;
+            ShowAlbumName = false;
+            ShowImageLocation = false;
+          };
+          Accounts = [
+            {
+              ImmichServerUrl = "http://localhost:${toString consts.ports.immich}";
+              ApiKeyFile = config.sops.secrets.immichframe-api-key.path;
+              Albums = [ "1f34a32a-5b68-4ce5-abe7-12b3c0ce37ff" ];
+              ShowVideos = true;
+            }
+          ];
+        };
       };
 
       systemd.services.immichframe = {
