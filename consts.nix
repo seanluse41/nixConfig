@@ -1,7 +1,7 @@
 {
   network = {
     homeServer = "192.168.50.110";
-    photoFrame = "192.168.50.139";
+    photoFrame = "immichFrame.local";
     piHole = "192.168.50.84";
     pi256 = "192.168.50.191";
     aiServer = "192.168.50.49";
