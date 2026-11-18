@@ -4,7 +4,7 @@ let
 in
 {
   flake.nixosModules.immich =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       services.immich = {
         enable = true;
@@ -20,11 +20,27 @@ in
         };
       };
 
+      sops.secrets.immichframe-api-key = { };
+
+      services.immichframe = {
+        enable = true;
+        port = consts.ports.immichFrame;
+        settings.Accounts = [
+          {
+            ImmichServerUrl = "http://localhost:${toString consts.ports.immich}";
+            ApiKeyFile = config.sops.secrets.immichframe-api-key.path;
+          }
+        ];
+      };
+
       users.users.immich.extraGroups = [
         "video"
         "render"
       ];
       environment.systemPackages = with pkgs; [ immich-cli ];
-      networking.firewall.allowedTCPPorts = [ consts.ports.immich ];
+      networking.firewall.allowedTCPPorts = [
+        consts.ports.immich
+        consts.ports.immichFrame
+      ];
     };
 }

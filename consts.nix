@@ -13,6 +13,7 @@
     http = 80;
     https = 443;
     immich = 2283;
+    immichFrame = 8080;
     copyparty = 3923;
     jellyfin = 8096;
     transmission = 9091;
