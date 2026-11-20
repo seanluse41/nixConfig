@@ -8,13 +8,22 @@
         self.nixosModules.tailscale
       ];
 
-      boot.kernelParams = [ "amdgpu.runpm=0" ];
+      boot.kernelParams = [
+        "amdgpu.runpm=0"
+        "ttm.pages_limit=1572864"
+      ];
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
       networking.hostName = "ai-server";
       networking.networkmanager.enable = true;
-      networking.firewall.allowedTCPPorts = [ 22 80 443 8080 8033 ];
+      networking.firewall.allowedTCPPorts = [
+        22
+        80
+        443
+        8080
+        8033
+      ];
 
       time.timeZone = "Asia/Tokyo";
       i18n.defaultLocale = "en_US.UTF-8";
@@ -38,7 +47,12 @@
       users.users.sean = {
         isNormalUser = true;
         linger = true;
-        extraGroups = [ "wheel" "networkmanager" "video" "render" ];
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "video"
+          "render"
+        ];
       };
 
       services.openssh = {
@@ -62,18 +76,35 @@
         "L+ /opt/rocm - - - - ${
           pkgs.symlinkJoin {
             name = "rocm-combined";
-            paths = with pkgs.rocmPackages; [ rocblas hipblas clr ];
+            paths = with pkgs.rocmPackages; [
+              rocblas
+              hipblas
+              clr
+            ];
           }
         }"
       ];
 
       security.pam.loginLimits = [
-        { domain = "*"; type = "soft"; item = "memlock"; value = "unlimited"; }
-        { domain = "*"; type = "hard"; item = "memlock"; value = "unlimited"; }
+        {
+          domain = "*";
+          type = "soft";
+          item = "memlock";
+          value = "unlimited";
+        }
+        {
+          domain = "*";
+          type = "hard";
+          item = "memlock";
+          value = "unlimited";
+        }
       ];
 
       nix.settings = {
-        experimental-features = [ "nix-command" "flakes" ];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
         max-jobs = "auto";
         cores = 0;
         auto-optimise-store = true;
