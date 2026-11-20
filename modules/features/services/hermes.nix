@@ -30,8 +30,9 @@ in
         '';
       };
 
-      systemd.tmpfiles.rules = [
+      systemd.tmpfiles.rules = lib.mkBefore [
         "Z /var/lib/hermes - sean users - -"
+        "d /var/lib/hermes/.hermes 2750 sean users - -"
       ];
 
       services.hermes-agent = {
