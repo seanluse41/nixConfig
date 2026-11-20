@@ -52,7 +52,7 @@ in
         };
         Service = {
           ExecStartPre = "${waitForGpus}";
-          ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 131072 -ctk q8_0 -ctv q8_0 -ngl 99 --cache-ram 0 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --allow-unauthenticated-tools --jinja -t 4 -tb 4 -np 1 --kv-unified --no-mmproj --no-mmap --spec-type draft-mtp --spec-draft-n-max 3 --chat-template-kwargs '{\"reasoning_effort\":\"low\"}'";
+          ExecStart = "${llama}/bin/llama-server -hf ${consts.models.qwen27b} -c 131072 -ctk q8_0 -ctv q8_0 -ngl 99 --cache-ram 0 --host 0.0.0.0 --port 8033 --webui-mcp-proxy --allow-unauthenticated-tools --jinja -t 4 -tb 4 -np 1 --kv-unified --no-mmproj -lm none --spec-type draft-mtp --spec-draft-n-max 3 --chat-template-kwargs '{\"reasoning_effort\":\"low\"}'";
           Restart = "on-failure";
           RestartSec = "30s";
           TimeoutStartSec = "300";
