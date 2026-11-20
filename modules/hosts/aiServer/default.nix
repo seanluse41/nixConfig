@@ -2,6 +2,7 @@
 {
   flake.nixosConfigurations.aiServer = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
+    specialArgs.hostName = "aiServer";
     modules = with self.nixosModules; [
       aiServerConfig
       ccache
