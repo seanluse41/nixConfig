@@ -5,7 +5,7 @@ in
 
 {
   flake.nixosModules.hermesAgent =
-    { config, ... }:
+    { config, lib, ... }:
     {
       imports = [ inputs.hermes-agent.nixosModules.default ];
 
