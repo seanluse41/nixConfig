@@ -57,6 +57,7 @@ in
       systemd.services.immichframe = {
         after = [ "immich-server.service" ];
         wants = [ "immich-server.service" ];
+        serviceConfig.ExecStartPre = "${pkgs.curl}/bin/curl -fs --retry 30 --retry-delay 2 --retry-connrefused http://localhost:${toString consts.ports.immich}/api/server/ping";
         serviceConfig.ExecStart = lib.mkForce "${config.services.immichframe.package}/bin/ImmichFrame.WebApi --urls=http://0.0.0.0:${toString consts.ports.immichFrame}";
       };
 
