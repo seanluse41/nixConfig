@@ -5,7 +5,7 @@ in
 
 {
   flake.nixosModules.hermesAgent =
-    { config, lib, ... }:
+    { config, lib, pkgs, ... }:
     {
       imports = [ inputs.hermes-agent.nixosModules.default ];
 
@@ -62,9 +62,50 @@ in
         };
         environmentFiles = [ config.sops.templates."hermes-env".path ];
         addToSystemPackages = true;
+        workingDirectory = "/var/lib/hermes/workspace"; # required for `documents`
+        documents."AGENTS.md" = ''
+          ## NixOS rebuilds
+          - Repo: /var/lib/hermes/nixConfig. `git pull` first so flake.lock matches main, then edit and commit.
+          - Before rebuilding, write what you did and what to verify to /var/lib/hermes/workspace/HANDOFF.md.
+          - Rebuild: /run/current-system/sw/bin/systemctl start --no-block hermes-rebuild.service
+            It will restart you. That is expected.
+          - At the start of every session, if HANDOFF.md exists: read it, check rebuild.log and the
+            relevant units, always report the outcome to Sean via the LINE gateway, then delete HANDOFF.md.
+        '';
         extraDependencyGroups = [ "messaging" ];
       };
 
       networking.firewall.allowedTCPPorts = [ 8646 ];
+
+      # --- Hermes-triggered rebuilds -------------------------------------
+      # root may read sean's clone
+      programs.git.config.safe.directory = [ "/var/lib/hermes/nixConfig" ];
+
+      # Separate root service: outlives hermes-agent restarts during activation.
+      systemd.services.hermes-rebuild = {
+        description = "nixos-rebuild switch, triggered by Hermes";
+        restartIfChanged = false; # don't kill the rebuild if it changes this unit
+        path = [
+          config.nix.package
+          pkgs.git
+          pkgs.nixos-rebuild
+        ];
+        serviceConfig = {
+          Type = "oneshot";
+          StandardOutput = "append:/var/lib/hermes/workspace/rebuild.log";
+        };
+        script = "nixos-rebuild switch --flake /var/lib/hermes/nixConfig#homeServer";
+      };
+
+      # Let sean (Hermes) start exactly that one unit, no sudo needed.
+      security.polkit.extraConfig = ''
+        polkit.addRule(function (action, subject) {
+          if (action.id == "org.freedesktop.systemd1.manage-units" &&
+              action.lookup("unit") == "hermes-rebuild.service" &&
+              subject.user == "sean") {
+            return polkit.Result.YES;
+          }
+        });
+      '';
     };
 }
