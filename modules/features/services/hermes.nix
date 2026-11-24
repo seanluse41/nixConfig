@@ -54,9 +54,10 @@ in
       # unless the group is the user's private group named after the user —
       # here it is "users", so cron dispatch fails with
       # unsafe_control_permissions. Force 2750 (no group write):
-      # mkAfter so these rules come last in 00-nixos.conf and win over the
-      # upstream 2770 rules (tmpfiles: later rule for a path wins).
-      systemd.tmpfiles.rules = lib.mkAfter [
+      # mkBefore so these `d` rules come FIRST in 00-nixos.conf — for
+      # duplicate `d` lines systemd-tmpfiles applies the FIRST one and
+      # ignores later duplicates ("Duplicate line for path ... ignoring").
+      systemd.tmpfiles.rules = lib.mkBefore [
         "Z /var/lib/hermes - sean users - -"
         "d /var/lib/hermes 2750 sean users - -"
         "d /var/lib/hermes/.hermes 2750 sean users - -"
