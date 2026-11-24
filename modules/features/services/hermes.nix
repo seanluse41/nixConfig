@@ -80,7 +80,7 @@ in
         environmentFiles = [ config.sops.templates."hermes-env".path ];
         addToSystemPackages = true;
         workingDirectory = ws; # required for `documents`
-        extraPackages = [ rebuildCmd ];
+        extraPackages = [ rebuildCmd pkgs.cowsay ];
         documents."AGENTS.md" = ''
           ## NixOS rebuilds
           Repo: ${repo}. `git pull` first so flake.lock matches main.
@@ -102,7 +102,9 @@ in
       systemd.services.hermes-agent.serviceConfig.ReadWritePaths = [ repo ];
 
       # --- Hermes-triggered rebuilds -------------------------------------
-      # root may read sean's clone
+      # root may read sean's clone (enable=true required — without it the
+      # module writes no /etc/gitconfig and safe.directory is a silent no-op)
+      programs.git.enable = true;
       programs.git.config.safe.directory = [ repo ];
 
       # Separate root service: outlives hermes-agent restarts during activation.
@@ -120,9 +122,12 @@ in
           StandardOutput = "append:${ws}/rebuild.log";
         };
         # set -e: the commit only runs if the rebuild succeeded
+        # path: (not the bare path) so nix uses the path fetcher, not the git
+        # fetcher — the git fetcher hits root's dubious-ownership check on
+        # sean's clone and fails (libgit2 error 7) even with safe.directory.
         script = ''
           echo "=== $(date -Is) ==="
-          nixos-rebuild switch --flake ${repo}#homeServer
+          nixos-rebuild switch --flake path:${repo}#homeServer
           runuser -l sean -c '${pkgs.git}/bin/git -C ${repo} commit -q -F ${ws}/rebuild-msg'
           echo "=== rebuild ok ==="
         '';
