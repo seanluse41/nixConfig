@@ -47,10 +47,37 @@ in
         '';
       };
 
-      systemd.tmpfiles.rules = lib.mkBefore [
+      # The upstream hermes-agent module hardcodes 2770 (setgid + group-
+      # writable) on all hermes state dirs, via tmpfiles rules AND via the
+      # hermes-agent-setup activation script (chmod 2770). The gateway's
+      # control-socket permission check rejects a group-writable HERMES_HOME
+      # unless the group is the user's private group named after the user —
+      # here it is "users", so cron dispatch fails with
+      # unsafe_control_permissions. Force 2750 (no group write):
+      # mkAfter so these rules come last in 00-nixos.conf and win over the
+      # upstream 2770 rules (tmpfiles: later rule for a path wins).
+      systemd.tmpfiles.rules = lib.mkAfter [
         "Z /var/lib/hermes - sean users - -"
+        "d /var/lib/hermes 2750 sean users - -"
         "d /var/lib/hermes/.hermes 2750 sean users - -"
+        "d /var/lib/hermes/workspace 2750 sean users - -"
+        "d /var/lib/hermes/.hermes/cron 2750 sean users - -"
+        "d /var/lib/hermes/.hermes/sessions 2750 sean users - -"
+        "d /var/lib/hermes/.hermes/logs 2750 sean users - -"
+        "d /var/lib/hermes/.hermes/memories 2750 sean users - -"
+        "d /var/lib/hermes/.hermes/plugins 2750 sean users - -"
       ];
+
+      # Defense in depth: if the upstream activation script (chmod 2770) runs
+      # after systemd-tmpfiles at boot, it would undo the 2750 rules above.
+      # Run after it and force 2750 again.
+      system.activationScripts."hermes-state-modes" =
+        lib.stringAfter [ "hermes-agent-setup" ] ''
+          chmod 2750 /var/lib/hermes /var/lib/hermes/.hermes /var/lib/hermes/workspace
+          chmod 2750 /var/lib/hermes/.hermes/cron /var/lib/hermes/.hermes/sessions \
+            /var/lib/hermes/.hermes/logs /var/lib/hermes/.hermes/memories \
+            /var/lib/hermes/.hermes/plugins
+        '';
 
       services.hermes-agent = {
         enable = true;
