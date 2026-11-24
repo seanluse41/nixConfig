@@ -116,8 +116,16 @@ in
           2. Write what you did and what to verify to ${ws}/HANDOFF.md.
           3. Run: hermes-rebuild "commit message"
              It stages, rebuilds and restarts you. It commits only if the rebuild succeeds.
-          4. At the start of every session, if HANDOFF.md exists: read it and check ${ws}/rebuild.log.
-             If it ends with "rebuild ok", the change is committed: verify the units, tell Sean, delete HANDOFF.md.
+          4. NEVER push to master — all changes go through a PR. The service's commit sits
+             on local master (ahead of origin). After "rebuild ok":
+             git branch -f hermes/<slug> master && git push origin hermes/<slug>
+             gh pr create --base master --head hermes/<slug> --title "..." --body "<what changed + what to verify>"
+             Close any earlier unmerged hermes/* PR whose commits are now included in the new branch.
+             Tell Sean the PR number. Do NOT reset local master — it stays ahead until Sean
+             merges; the next `git pull` fast-forwards.
+          5. At the start of every session, if HANDOFF.md exists: read it and check ${ws}/rebuild.log.
+             If it ends with "rebuild ok", the change is committed: verify the units, make sure
+             the PR exists (create it if not), tell Sean, delete HANDOFF.md.
              If it failed, fix the error and run hermes-rebuild again, or discard with
              `git restore --staged --worktree .`.
         '';
