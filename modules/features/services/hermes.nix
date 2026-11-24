@@ -151,6 +151,7 @@ in
         path = [
           config.nix.package
           pkgs.git
+          pkgs.jq
           pkgs.nixos-rebuild
           pkgs.util-linux
         ];
@@ -162,9 +163,48 @@ in
         # path: (not the bare path) so nix uses the path fetcher, not the git
         # fetcher — the git fetcher hits root's dubious-ownership check on
         # sean's clone and fails (libgit2 error 7) even with safe.directory.
+        #
+        # DRAIN GATE (2026-11-24): the switch restarts the hermes-agent unit,
+        # which can kill the gateway MID-TURN — in flight replies never get
+        # delivered to the user (lost a real LINE message on 2026-11-24).
+        # The gateway has a built-in quiesce contract (gateway/drain_control.
+        # py): writing {HERMES_HOME}/.drain_request.json makes it refuse NEW
+        # turns while in-flight turns run to completion (process stays up),
+        # and while the marker exists it re-persists active_agents to
+        # gateway_state.json every ~1s. So: write the marker, wait until
+        # active_agents == 0 (all turns/cron/API work flushed, replies
+        # delivered), THEN switch. The gate must live in the SERVICE, not in
+        # the hermes-rebuild wrapper — the wrapper runs inside my turn, and
+        # blocking it until active_agents==0 would deadlock (my turn can't
+        # end until the wrapper returns). No "epoch" field in the marker:
+        # the contract is lenient, presence-only markers are honoured.
+        # After the switch, REMOVE the marker: a unit restart keeps the same
+        # instantiation epoch (PID 1 unchanged), so the NEW gateway would
+        # otherwise honour the stale marker and refuse turns for up to an
+        # hour (the NS-570/#85433 hazard).
         script = ''
+          HH=/var/lib/hermes/.hermes
+          if [ -r $HH/gateway.pid ] && kill -0 "$(cat $HH/gateway.pid)" 2>/dev/null; then
+            echo "drain: requesting quiesce (waiting for active_agents=0, up to 15m)"
+            printf '{"action":"drain","requested_at":"%s","principal":"hermes-rebuild","suppress_notification":true}\n' \
+              "$(date -Is)" > $HH/.drain_request.json
+            a=1
+            for i in $(seq 1 180); do
+              a=$(jq -r '.active_agents // 0' $HH/gateway_state.json 2>/dev/null || echo 0)
+              if [ "$a" = "0" ]; then break; fi
+              sleep 5
+            done
+            if [ "$a" = "0" ]; then
+              echo "drain: gateway quiesced (active_agents=0), safe to switch"
+            else
+              echo "drain: WARN — still active (active_agents=$a) after 15m, proceeding anyway"
+            fi
+          else
+            echo "drain: gateway not running, skipping quiesce"
+          fi
           echo "=== $(date -Is) ==="
           nixos-rebuild switch --flake path:${repo}#homeServer
+          rm -f $HH/.drain_request.json
           runuser -l sean -c '${pkgs.git}/bin/git -C ${repo} commit -q -F ${ws}/rebuild-msg'
           echo "=== rebuild ok ==="
         '';
