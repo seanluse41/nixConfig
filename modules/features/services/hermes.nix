@@ -192,7 +192,9 @@ in
         # hour (the NS-570/#85433 hazard).
         script = ''
           HH=/var/lib/hermes/.hermes
-          if [ -r $HH/gateway.pid ] && kill -0 "$(cat $HH/gateway.pid)" 2>/dev/null; then
+          # gateway.pid is JSON ({"pid": N, ...}), not a bare pid — extract first
+          gp=$(jq -r '.pid // empty' $HH/gateway.pid 2>/dev/null)
+          if [ -n "$gp" ] && kill -0 "$gp" 2>/dev/null; then
             echo "drain: requesting quiesce (waiting for active_agents=0, up to 15m)"
             printf '{"action":"drain","requested_at":"%s","principal":"hermes-rebuild","suppress_notification":true}\n' \
               "$(date -Is)" > $HH/.drain_request.json
