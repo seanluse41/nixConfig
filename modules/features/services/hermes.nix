@@ -129,6 +129,15 @@ in
       # Sandbox is ProtectSystem=strict; let Hermes write to the config repo.
       systemd.services.hermes-agent.serviceConfig.ReadWritePaths = [ repo ];
 
+      # gh auth: my HOME is /var/lib/hermes, so gh by default reads
+      # /var/lib/hermes/.config/gh — which goes stale whenever Sean refreshes
+      # auth from an SSH session (HOME=/home/sean). Point gh at sean's config
+      # dir so one auth refresh covers both of us. (Read-only for me under
+      # ProtectSystem=strict; that's fine — refreshes happen from SSH.)
+      systemd.services.hermes-agent.serviceConfig.Environment = [
+        "GH_CONFIG_DIR=/home/sean/.config/gh"
+      ];
+
       # --- Hermes-triggered rebuilds -------------------------------------
       # root may read sean's clone (enable=true required — without it the
       # module writes no /etc/gitconfig and safe.directory is a silent no-op)
