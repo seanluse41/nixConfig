@@ -1,11 +1,28 @@
 { inputs, ... }:
 let
   consts = import ../../../consts.nix;
+  repo = "/home/sean/nixConfig";
 in
 
 {
   flake.nixosModules.hermesAgent =
     { config, lib, pkgs, ... }:
+    let
+      ws = "/var/lib/hermes/workspace";
+      # `hermes-rebuild "commit message"`: stage, then hand off to the root unit.
+      rebuildCmd = pkgs.writeShellApplication {
+        name = "hermes-rebuild";
+        runtimeInputs = [ pkgs.git ];
+        text = ''
+          [ $# -eq 1 ] || { echo 'usage: hermes-rebuild "commit message"' >&2; exit 2; }
+          cd ${repo}
+          git add -A # flakes ignore untracked files
+          if git diff --cached --quiet; then echo "nothing to rebuild" >&2; exit 1; fi
+          printf '%s\n' "$1" > ${ws}/rebuild-msg
+          exec ${config.systemd.package}/bin/systemctl start --no-block hermes-rebuild.service
+        '';
+      };
+    in
     {
       imports = [ inputs.hermes-agent.nixosModules.default ];
 
@@ -62,24 +79,31 @@ in
         };
         environmentFiles = [ config.sops.templates."hermes-env".path ];
         addToSystemPackages = true;
-        workingDirectory = "/var/lib/hermes/workspace"; # required for `documents`
+        workingDirectory = ws; # required for `documents`
+        extraPackages = [ rebuildCmd ];
         documents."AGENTS.md" = ''
           ## NixOS rebuilds
-          - Repo: /var/lib/hermes/nixConfig. `git pull` first so flake.lock matches main, then edit and commit.
-          - Before rebuilding, write what you did and what to verify to /var/lib/hermes/workspace/HANDOFF.md.
-          - Rebuild: /run/current-system/sw/bin/systemctl start --no-block hermes-rebuild.service
-            It will restart you. That is expected.
-          - At the start of every session, if HANDOFF.md exists: read it, check rebuild.log and the
-            relevant units, always report the outcome to Sean via the LINE gateway, then delete HANDOFF.md.
+          Repo: ${repo}. `git pull` first so flake.lock matches main.
+          1. Edit files. Do not run git add or git commit yourself.
+          2. Write what you did and what to verify to ${ws}/HANDOFF.md.
+          3. Run: hermes-rebuild "commit message"
+             It stages, rebuilds and restarts you. It commits only if the rebuild succeeds.
+          4. At the start of every session, if HANDOFF.md exists: read it and check ${ws}/rebuild.log.
+             If it ends with "rebuild ok", the change is committed: verify the units, tell Sean, delete HANDOFF.md.
+             If it failed, fix the error and run hermes-rebuild again, or discard with
+             `git restore --staged --worktree .`.
         '';
         extraDependencyGroups = [ "messaging" ];
       };
 
       networking.firewall.allowedTCPPorts = [ 8646 ];
 
+      # Sandbox is ProtectSystem=strict; let Hermes write to the config repo.
+      systemd.services.hermes-agent.serviceConfig.ReadWritePaths = [ repo ];
+
       # --- Hermes-triggered rebuilds -------------------------------------
       # root may read sean's clone
-      programs.git.config.safe.directory = [ "/var/lib/hermes/nixConfig" ];
+      programs.git.config.safe.directory = [ repo ];
 
       # Separate root service: outlives hermes-agent restarts during activation.
       systemd.services.hermes-rebuild = {
@@ -89,12 +113,19 @@ in
           config.nix.package
           pkgs.git
           pkgs.nixos-rebuild
+          pkgs.util-linux
         ];
         serviceConfig = {
           Type = "oneshot";
-          StandardOutput = "append:/var/lib/hermes/workspace/rebuild.log";
+          StandardOutput = "append:${ws}/rebuild.log";
         };
-        script = "nixos-rebuild switch --flake /var/lib/hermes/nixConfig#homeServer";
+        # set -e: the commit only runs if the rebuild succeeded
+        script = ''
+          echo "=== $(date -Is) ==="
+          nixos-rebuild switch --flake ${repo}#homeServer
+          runuser -l sean -c '${pkgs.git}/bin/git -C ${repo} commit -q -F ${ws}/rebuild-msg'
+          echo "=== rebuild ok ==="
+        '';
       };
 
       # Let sean (Hermes) start exactly that one unit, no sudo needed.
