@@ -108,7 +108,7 @@ in
         environmentFiles = [ config.sops.templates."hermes-env".path ];
         addToSystemPackages = true;
         workingDirectory = ws; # required for `documents`
-        extraPackages = [ rebuildCmd pkgs.cowsay ];
+        extraPackages = [ rebuildCmd pkgs.cowsay pkgs.jq ];
         documents."AGENTS.md" = ''
           ## NixOS rebuilds
           Repo: ${repo}. `git pull` first so flake.lock matches main.
