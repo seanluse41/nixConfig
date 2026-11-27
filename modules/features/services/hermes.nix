@@ -108,7 +108,7 @@ in
         environmentFiles = [ config.sops.templates."hermes-env".path ];
         addToSystemPackages = true;
         workingDirectory = ws; # required for `documents`
-        extraPackages = [ rebuildCmd pkgs.cowsay ];
+        extraPackages = [ rebuildCmd pkgs.cowsay pkgs.jq ];
         documents."AGENTS.md" = ''
           ## NixOS rebuilds
           Repo: ${repo}. `git pull` first so flake.lock matches main.
@@ -116,8 +116,16 @@ in
           2. Write what you did and what to verify to ${ws}/HANDOFF.md.
           3. Run: hermes-rebuild "commit message"
              It stages, rebuilds and restarts you. It commits only if the rebuild succeeds.
-          4. At the start of every session, if HANDOFF.md exists: read it and check ${ws}/rebuild.log.
-             If it ends with "rebuild ok", the change is committed: verify the units, tell Sean, delete HANDOFF.md.
+          4. NEVER push to master — all changes go through a PR. The service's commit sits
+             on local master (ahead of origin). After "rebuild ok":
+             git branch -f hermes/<slug> master && git push origin hermes/<slug>
+             gh pr create --base master --head hermes/<slug> --title "..." --body "<what changed + what to verify>"
+             Close any earlier unmerged hermes/* PR whose commits are now included in the new branch.
+             Tell Sean the PR number. Do NOT reset local master — it stays ahead until Sean
+             merges; the next `git pull` fast-forwards.
+          5. At the start of every session, if HANDOFF.md exists: read it and check ${ws}/rebuild.log.
+             If it ends with "rebuild ok", the change is committed: verify the units, make sure
+             the PR exists (create it if not), tell Sean, delete HANDOFF.md.
              If it failed, fix the error and run hermes-rebuild again, or discard with
              `git restore --staged --worktree .`.
         '';
@@ -184,7 +192,9 @@ in
         # hour (the NS-570/#85433 hazard).
         script = ''
           HH=/var/lib/hermes/.hermes
-          if [ -r $HH/gateway.pid ] && kill -0 "$(cat $HH/gateway.pid)" 2>/dev/null; then
+          # gateway.pid is JSON ({"pid": N, ...}), not a bare pid — extract first
+          gp=$(jq -r '.pid // empty' $HH/gateway.pid 2>/dev/null)
+          if [ -n "$gp" ] && kill -0 "$gp" 2>/dev/null; then
             echo "drain: requesting quiesce (waiting for active_agents=0, up to 15m)"
             printf '{"action":"drain","requested_at":"%s","principal":"hermes-rebuild","suppress_notification":true}\n' \
               "$(date -Is)" > $HH/.drain_request.json
