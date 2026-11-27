@@ -39,6 +39,10 @@ in
           SLACK_BOT_TOKEN=${config.sops.placeholder."SLACK_BOT_TOKEN"}
           SLACK_APP_TOKEN=${config.sops.placeholder."SLACK_APP_TOKEN"}
           SLACK_ALLOWED_USERS=${config.sops.placeholder."SLACK_ALLOWED_USERS"}
+          # Slack home channel: where cron/async results are delivered. Set via
+          # SLACK_HOME_CHANNEL (channel ID), read by gateway/config.py on startup.
+          # = #general. (LINE equivalent: LINE_HOME_CHANNEL below.)
+          SLACK_HOME_CHANNEL=C081PT6RV1A
           LINE_CHANNEL_ACCESS_TOKEN=${config.sops.placeholder."line-channel-access-token"}
           LINE_CHANNEL_SECRET=${config.sops.placeholder."line-channel-secret"}
           LINE_ALLOWED_USERS=${config.sops.placeholder."LINE_ALLOWED_USERS"}
